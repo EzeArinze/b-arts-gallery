@@ -2,6 +2,7 @@
 
 import * as Clerk from "@clerk/elements/common";
 import * as SignUp from "@clerk/elements/sign-up";
+import Link from "next/link";
 
 export default function SignUpPage() {
   return (
@@ -11,7 +12,7 @@ export default function SignUpPage() {
           {/* Poster-style header */}
           <div className="mb-12 text-center">
             <div className="text-xs tracking-[0.4em] text-primary/70 font-extrabold blur-[0.4px]">
-              BUMEZ ART PRESENTS
+              BUMEZ ART GALLERY
             </div>
             <h1 className="mt-4 font-anton text-[18vw] md:text-[10rem] leading-[0.9] text-primary">
               JOIN
@@ -76,6 +77,15 @@ export default function SignUpPage() {
               >
                 CONTINUE
               </SignUp.Action>
+
+              <div className="space-x-2 mt-2 text-center flex items-center justify-center">
+                <p className="font-semibold text-muted-foreground text-sm">
+                  have an account
+                </p>
+                <Link href={"/sign-in"} className="underline text-primary">
+                  sign-in
+                </Link>
+              </div>
             </SignUp.Step>
 
             {/* Email magic link / code */}

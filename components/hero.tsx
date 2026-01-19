@@ -1,5 +1,6 @@
 import Image from "next/image";
 import hero from "@/public/hero.webp";
+import AuthUser from "@/app/_components/auth-user";
 
 export default function GothifHero() {
   return (
@@ -19,6 +20,7 @@ export default function GothifHero() {
       <div className="relative z-10 flex h-full w-full flex-col items-center justify-center px-6 md:px-16 text-center">
         <div className="absolute top-6 left-1/2 -translate-x-1/2 text-xs font-extrabold tracking-[0.35em] text-primary blur-[0.4px]">
           BUMEZ ART PRESENTS
+          <AuthUser />
         </div>
 
         <h1 className="text-primary leading-[0.85] text-[22vw] md:text-[18vw]">

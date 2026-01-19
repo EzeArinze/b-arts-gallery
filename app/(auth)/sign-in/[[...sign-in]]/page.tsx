@@ -2,6 +2,7 @@
 
 import * as Clerk from "@clerk/elements/common";
 import * as SignIn from "@clerk/elements/sign-in";
+import Link from "next/link";
 
 export default function SignInPage() {
   return (
@@ -11,10 +12,10 @@ export default function SignInPage() {
           {/* Poster-style header */}
           <div className="mb-12 text-center">
             <div className="text-xs tracking-[0.4em] text-primary/70 font-extrabold blur-[0.4px]">
-              BUMEZ ART PRESENTS
+              BUMEZ ART GALLERY
             </div>
             <h1 className="mt-4 font-anton text-[18vw] md:text-[10rem] leading-[0.9] text-primary">
-              ACCESS
+              HELLO
             </h1>
           </div>
 
@@ -56,6 +57,14 @@ export default function SignInPage() {
               >
                 CONTINUE
               </SignIn.Action>
+              <div className="space-x-2 mt-2 text-center flex items-center justify-center">
+                <p className="font-semibold text-muted-foreground text-sm">
+                  Don&apos;t have an account
+                </p>
+                <Link href={"/sign-up"} className="underline text-primary">
+                  sign-up
+                </Link>
+              </div>
             </SignIn.Step>
 
             {/* Magic link / code verification */}
