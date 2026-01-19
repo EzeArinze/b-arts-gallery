@@ -1,5 +1,5 @@
 import Image from "next/image";
-import artist from "@/public/hero.png";
+import artist from "@/public/hero.webp";
 
 export default function AboutArtist() {
   return (

@@ -4,6 +4,7 @@ import collectionHero from "@/public/ArtShop.webp";
 import img1 from "@/public/musclelisa.webp";
 import img2 from "@/public/girl-with-pearl.webp";
 import img3 from "@/public/download.webp";
+import { Button } from "@/components/ui/button";
 
 const collectionItems = [img1, img2, img3];
 
@@ -57,13 +58,29 @@ export default function CollectionSection() {
       {/* Secondary grid */}
       <div className="mt-24 grid grid-cols-2 gap-6 md:grid-cols-3">
         {collectionItems.map((img, i) => (
-          <div key={i} className="relative aspect-[3/4]">
-            <Image
-              src={img}
-              alt="Collection artwork"
-              fill
-              className="object-cover brightness-95 contrast-110"
-            />
+          <div key={i} className="relative flex flex-col gap-2">
+            <div className="relative aspect-3/4">
+              <Image
+                src={img}
+                alt="Collection artwork"
+                fill
+                className="object-cover brightness-95 contrast-110"
+              />
+            </div>
+            <span className="relative flex items-center gap-2">
+              <h3 className="text-sm tracking-[0.3em] text-muted-foreground">
+                PRICE
+                <span className="ml-3 text-foreground tracking-normal">
+                  $400
+                </span>
+              </h3>
+              <Button
+                variant={"ghost"}
+                className="md:text-sm font-semibold rounded-none hover:border-2 transition-all duration-100 ease-out  border border-transparent px-4 py-1 text-xs tracking-widest hover:flex-1 hover:bg-none hover:border-primary hover:text-primary"
+              >
+                BUY
+              </Button>
+            </span>
           </div>
         ))}
       </div>
