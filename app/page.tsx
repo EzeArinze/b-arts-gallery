@@ -1,6 +1,7 @@
 import GothifHero from "../components/hero";
 import AboutArtist from "./_components/about-me";
 import CollectionSection from "./_components/collections";
+import { Footer } from "./_components/footer";
 import NewDrops from "./_components/new-drops";
 
 export default function Home() {
@@ -10,6 +11,7 @@ export default function Home() {
       <NewDrops />
       <CollectionSection />
       <AboutArtist />
+      <Footer />
     </div>
   );
 }

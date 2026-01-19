@@ -3,7 +3,7 @@ import hero from "@/public/hero.webp";
 
 export default function GothifHero() {
   return (
-    <section className="relative h-full w-full overflow-hidden bg-black">
+    <section className="relative h-full md:h-full w-full overflow-hidden bg-black">
       <Image
         src={hero}
         alt="Gothif background"
@@ -17,7 +17,7 @@ export default function GothifHero() {
 
       {/* Content */}
       <div className="relative z-10 flex h-full w-full flex-col items-center justify-center px-6 md:px-16 text-center">
-        <div className="absolute top-6 left-1/2 -translate-x-1/2 text-xs tracking-[0.35em] text-primary font-semibold">
+        <div className="absolute top-6 left-1/2 -translate-x-1/2 text-xs font-extrabold tracking-[0.35em] text-primary blur-[0.4px]">
           BUMEZ ART PRESENTS
         </div>
 

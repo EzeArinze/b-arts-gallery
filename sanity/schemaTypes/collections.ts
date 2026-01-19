@@ -13,7 +13,7 @@ export const collectionSchema = defineType({
   fields: [
     defineField({
       title: "Name",
-      name: "Name",
+      name: "name",
       type: "string",
       description: "Be creative",
       validation: (rule) =>
@@ -35,7 +35,7 @@ export const collectionSchema = defineType({
 
     defineField({
       title: "Art Image",
-      name: "art-image",
+      name: "artImage",
       type: "image",
       options: { hotspot: true },
       fields: [
@@ -61,7 +61,7 @@ export const collectionSchema = defineType({
     // }),
 
     defineField({
-      name: "creation-date",
+      name: "creationDate",
       title: "Created On",
       type: "date",
       description: "What date was the art created/made",
@@ -77,11 +77,11 @@ export const collectionSchema = defineType({
     }),
   ],
   preview: {
-    select: { title: "title", media: "image", date: "creation-date" },
-    prepare: ({ title, media, date }) => {
+    select: { name: "name", media: "image", date: "creationDate" },
+    prepare: ({ name, media, date }) => {
       return {
-        title: title,
-        subtitle: `Created on ${date}`,
+        title: name,
+        subtitle: date ? `Created on ${date}` : "No creation date",
         media,
       };
     },
