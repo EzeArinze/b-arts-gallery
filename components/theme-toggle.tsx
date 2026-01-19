@@ -6,7 +6,7 @@ import { useTheme } from "next-themes";
 
 import { Button } from "@/components/ui/button";
 
-export function ModeToggle() {
+export function ThemeToggle() {
   const { theme, setTheme } = useTheme();
 
   function handleToggle() {
@@ -18,9 +18,14 @@ export function ModeToggle() {
   }
 
   return (
-    <Button variant="outline" size="icon" onClick={handleToggle}>
-      <Sun className="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
-      <Moon className="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
+    <Button
+      variant="ghost"
+      size="icon"
+      onClick={handleToggle}
+      className="size-7 rounded-full border-primary border cursor-pointer hover:bg-primary hover:text-white"
+    >
+      <Sun className="size-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
+      <Moon className="absolute size-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
       <span className="sr-only">Toggle theme</span>
     </Button>
   );

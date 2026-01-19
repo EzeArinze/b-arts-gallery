@@ -9,18 +9,18 @@ function AuthUser() {
   const { user, isSignedIn } = useUser();
 
   return (
-    <div>
+    <div className="mt-2">
       {!user && !isSignedIn ? (
         <Link href={"/sign-in"}>
           <Button
-            className="mt-2 font-anton rounded-full border-primary border cursor-pointer hover:bg-primary hover:text-white"
+            className="size-7 font-anton rounded-full border-primary border cursor-pointer hover:bg-primary hover:text-white"
             variant={"ghost"}
           >
             <User2 className="size-3" />
           </Button>
         </Link>
       ) : (
-        <div className="mt-2">
+        <div>
           <UserButton
             appearance={{
               elements: {
