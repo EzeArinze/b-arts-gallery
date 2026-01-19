@@ -23,12 +23,16 @@ export default function SignInPage() {
           <div className="border border-primary/40 px-6 py-8">
             <SignIn.Step name="start">
               {/* Google */}
+
               <Clerk.Connection
                 name="google"
-                className=" w-full border border-primary/50 py-3 mb-8 font-anton text-xs tracking-[0.35em]
- text-primary hover:bg-primary hover:text-black transition"
+                className="w-full border border-primary/50 py-3 mb-8 font-anton text-xs tracking-[0.35em] text-primary hover:bg-primary hover:text-black transition"
               >
-                SIGN IN WITH GOOGLE
+                <Clerk.Loading scope="provider:google">
+                  {(isLoading) =>
+                    isLoading ? "LOADING..." : "SIGN IN WITH GOOGLE"
+                  }
+                </Clerk.Loading>
               </Clerk.Connection>
 
               {/* Divider */}
@@ -84,7 +88,9 @@ export default function SignInPage() {
                   submit
                   className="mt-8 w-full bg-primary text-black py-3 font-anton text-xs tracking-[0.35em] hover:bg-primary/90 transition"
                 >
-                  VERIFY
+                  <Clerk.Loading scope="step:verifications">
+                    {(isLoading) => (isLoading ? "VERIFYING..." : "VERIFY")}
+                  </Clerk.Loading>
                 </SignIn.Action>
               </SignIn.Strategy>
             </SignIn.Step>

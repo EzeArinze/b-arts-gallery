@@ -25,16 +25,13 @@ export default function SignUpPage() {
               {/* Google */}
               <Clerk.Connection
                 name="google"
-                className="
-                w-full border border-primary/50
-                py-3 mb-8
-                font-anton text-xs tracking-[0.35em]
-                text-primary
-                hover:bg-primary hover:text-black
-                transition
-              "
+                className="w-full border border-primary/50 py-3 mb-8 font-anton text-xs tracking-[0.35em] text-primary hover:bg-primary hover:text-black transition"
               >
-                SIGN UP WITH GOOGLE
+                <Clerk.Loading scope="provider:google">
+                  {(isLoading) =>
+                    isLoading ? "LOADING..." : "SIGN IN WITH GOOGLE"
+                  }
+                </Clerk.Loading>
               </Clerk.Connection>
 
               {/* Divider */}
@@ -119,7 +116,9 @@ export default function SignUpPage() {
                   transition
                 "
                 >
-                  VERIFY & ENTER
+                  <Clerk.Loading scope="step:verifications">
+                    {(isLoading) => (isLoading ? "VERIFYING..." : "VERIFY")}
+                  </Clerk.Loading>
                 </SignUp.Action>
               </SignUp.Strategy>
             </SignUp.Step>
