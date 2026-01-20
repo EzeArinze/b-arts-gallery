@@ -3,6 +3,7 @@ import { Anton } from "next/font/google";
 import { ThemeProvider } from "@/providers/theme-providers";
 import AuthProvider from "@/providers/auth-provider";
 import "./globals.css";
+import { Footer } from "./_components/footer";
 
 const anton = Anton({
   variable: "--font-anton",
@@ -31,6 +32,8 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             {children}
+
+            <Footer />
           </ThemeProvider>
         </body>
       </html>

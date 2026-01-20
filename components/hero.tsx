@@ -25,9 +25,9 @@ export default function GothifHero() {
         </div>
         <div className="absolute top-6 left-1/2 -translate-x-1/2 text-xs font-bold md:font-extrabold tracking-[0.35em] text-primary blur-[0.4px]">
           BUMEZ ART PRESENTS
-          <AuthUser />
         </div>
         <div className="absolute flex items-center gap-2 top-6 right-[10%]">
+          <AuthUser />
           <ThemeToggle />
         </div>
 
