@@ -45,20 +45,63 @@ export const collectionSchema = defineType({
           title: "Alternative text",
         },
       ],
-      validation: (rule) => rule.required().error("A art image is required."),
+      validation: (rule) => rule.required().error("An art image is required."),
+    }),
+
+    defineField({
+      name: "price",
+      title: "Price",
+      type: "object",
+      fields: [
+        defineField({
+          name: "amount",
+          type: "number",
+          validation: (Rule) => Rule.required().min(0),
+        }),
+        defineField({
+          name: "currency",
+          type: "string",
+          options: {
+            list: ["NGN", "USD", "EUR"],
+          },
+          initialValue: "NGN",
+        }),
+      ],
     }),
 
     // defineField({
-    //   title: "Images",
-    //   name: "images",
-    //   type: "array",
-    //   of: [defineArrayMember({ type: "image" })],
+    //   name: "size",
+    //   title: "Size",
+    //   type: "string",
     //   validation: (rule) =>
-    //     rule
-    //       .min(1)
-    //       .max(2)
-    //       .warning("Add at least 1 and at most 2 supporting images."),
+    //     rule.required().warning("art size was not provided"),
     // }),
+    //
+    defineField({
+      name: "dimensions",
+      title: "Dimensions",
+      type: "object",
+      fields: [
+        { name: "width", type: "number", title: "Width (cm)" },
+        { name: "height", type: "number", title: "Height (cm)" },
+        {
+          name: "unit",
+          type: "string",
+          options: { list: ["cm", "in"] },
+          initialValue: "cm",
+        },
+      ],
+    }),
+
+    defineField({
+      name: "available",
+      title: "Available",
+      type: "boolean",
+      description: "Is the art available/in-store ?",
+      initialValue: true,
+      validation: (rule) =>
+        rule.required().warning("art availability was not provided"),
+    }),
 
     defineField({
       name: "creationDate",
@@ -82,7 +125,7 @@ export const collectionSchema = defineType({
       return {
         title: name,
         subtitle: date ? `Created on ${date}` : "No creation date",
-        media,
+        media: media,
       };
     },
   },

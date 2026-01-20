@@ -5,6 +5,7 @@ import img1 from "@/public/musclelisa.webp";
 import img2 from "@/public/girl-with-pearl.webp";
 import img3 from "@/public/download.webp";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const collectionItems = [img1, img2, img3];
 
@@ -50,7 +51,9 @@ export default function CollectionSection() {
           <div className="flex items-center gap-6 text-sm tracking-widest">
             <span className="text-muted-foreground">2025 EDITION</span>
 
-            <span className="text-primary">VIEW COLLECTION →</span>
+            <Link href={"/art"} className="text-primary hover:underline">
+              VIEW COLLECTION →
+            </Link>
           </div>
         </div>
       </div>
@@ -69,10 +72,9 @@ export default function CollectionSection() {
             </div>
             <span className="relative flex items-center gap-2">
               <h3 className="text-sm tracking-[0.3em] text-muted-foreground">
-                PRICE
-                <span className="ml-3 text-foreground tracking-normal">
-                  $400
-                </span>
+                {/*PRICE*/}
+                $400
+                {/*<span className=" text-foreground tracking-normal">$400</span>*/}
               </h3>
               <Button
                 variant={"ghost"}
