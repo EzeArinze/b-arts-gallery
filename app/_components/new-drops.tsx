@@ -1,27 +1,34 @@
 import Image from "next/image";
+import { HOME_QUERYResult } from "@/sanity.types";
+import { urlFor } from "@/sanity/lib/image";
 
-import musclelisa from "@/public/musclelisa.webp";
-import noface from "@/public/ArtShop.webp";
-import withpearl from "@/public/girl-with-pearl.webp";
-import distorted from "@/public/download.webp";
+export default function NewDrops({
+  newPostImage,
+}: {
+  newPostImage: HOME_QUERYResult["newPostImages"];
+}) {
+  if (!newPostImage?.length) return null;
 
-const newDrops = [
-  { id: 1, image: noface },
-  { id: 2, image: withpearl },
-  { id: 3, image: distorted },
-  { id: 4, image: musclelisa },
-];
+  const isSingleImage = newPostImage.length === 1;
 
-export default function NewDrops() {
   return (
     <section className="relative mx-auto w-full max-w-7xl bg-background lg:min-h-screen lg:flex lg:items-center">
       {/* Image grid */}
-      <div className="grid w-full grid-cols-2 lg:max-h-[85vh]">
-        {newDrops.map((item) => (
-          <div key={item.id} className="relative aspect-3/4">
+      <div
+        className={`grid w-full ${
+          isSingleImage ? "grid-cols-1" : "grid-cols-2"
+        } lg:max-h-[85vh]`}
+      >
+        {newPostImage.map((item) => (
+          <div
+            key={item.image.alt}
+            className={`relative ${
+              isSingleImage ? "aspect-video" : "aspect-3/4"
+            }`}
+          >
             <Image
-              src={item.image}
-              alt="New drop artwork"
+              src={item.image.url ? urlFor(item.image.url).url() : ""}
+              alt={item.image.alt || "New drop artwork"}
               fill
               priority
               className="object-cover contrast-110 brightness-95"

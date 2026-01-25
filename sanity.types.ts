@@ -221,3 +221,37 @@ export type Geopoint = {
 
 export type AllSanitySchemaTypes = Order | Collection | BlockContent | SanityImageCrop | SanityImageHotspot | Slug | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
 export declare const internalGroqTypeReferenceTo: unique symbol;
+// Source: ./sanity/lib/queries.ts
+// Variable: HOME_QUERY
+// Query: {  "newPostImages": *[_type == "collection"]    | order(_createdAt desc)[0...4]{      _id,      "image": {        "url": artImage.asset->url,        "alt": artImage.alt      }    },  "HomePageCollections": *[_type == "collection"][0...4]{    name,    "slug": slug.current,    price{      amount,      currency    },    creationDate,    about,    "image": {      "url": artImage.asset->url,      "alt": artImage.alt    }  }}
+export type HOME_QUERYResult = {
+  newPostImages: Array<{
+    _id: string;
+    image: {
+      url: string | null;
+      alt: string | null;
+    };
+  }>;
+  HomePageCollections: Array<{
+    name: string | null;
+    slug: string | null;
+    price: {
+      amount: number | null;
+      currency: "EUR" | "NGN" | "USD" | null;
+    } | null;
+    creationDate: string | null;
+    about: BlockContent | null;
+    image: {
+      url: string | null;
+      alt: string | null;
+    };
+  }>;
+};
+
+// Query TypeMap
+import "@sanity/client";
+declare module "@sanity/client" {
+  interface SanityQueries {
+    "\n{\n  \"newPostImages\": *[_type == \"collection\"]\n    | order(_createdAt desc)[0...4]{\n      _id,\n      \"image\": {\n        \"url\": artImage.asset->url,\n        \"alt\": artImage.alt\n      }\n    },\n\n  \"HomePageCollections\": *[_type == \"collection\"][0...4]{\n    name,\n    \"slug\": slug.current,\n    price{\n      amount,\n      currency\n    },\n    creationDate,\n    about,\n    \"image\": {\n      \"url\": artImage.asset->url,\n      \"alt\": artImage.alt\n    }\n  }\n}\n": HOME_QUERYResult;
+  }
+}

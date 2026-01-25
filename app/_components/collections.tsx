@@ -1,15 +1,18 @@
 import Image from "next/image";
-
-import collectionHero from "@/public/ArtShop.webp";
-import img1 from "@/public/musclelisa.webp";
-import img2 from "@/public/girl-with-pearl.webp";
-import img3 from "@/public/download.webp";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { HOME_QUERYResult } from "@/sanity.types";
+import { urlFor } from "@/sanity/lib/image";
+import { formatCurrency } from "@/utils/format-currency";
+import { PortableText } from "next-sanity";
 
-const collectionItems = [img1, img2, img3];
+export default function CollectionSection({
+  homePageCollection,
+}: {
+  homePageCollection: HOME_QUERYResult["HomePageCollections"];
+}) {
+  const firstItem = homePageCollection[0];
 
-export default function CollectionSection() {
   return (
     <section className="relative w-full bg-background px-6 py-24 md:px-16">
       {/* Header */}
@@ -28,10 +31,10 @@ export default function CollectionSection() {
       {/* Main feature */}
       <div className="grid gap-12 md:grid-cols-2">
         {/* Image */}
-        <div className="relative aspect-3/4">
+        <div className="relative aspect-4/5">
           <Image
-            src={collectionHero}
-            alt="Featured collection"
+            src={firstItem.image.url ? urlFor(firstItem.image.url).url() : ""}
+            alt={firstItem.image.alt || "Featured collection"}
             fill
             className="object-cover brightness-95 contrast-110"
           />
@@ -39,17 +42,18 @@ export default function CollectionSection() {
 
         {/* Text */}
         <div className="flex flex-col justify-center gap-6">
-          <h3 className="text-3xl md:text-4xl font-medium">
-            Gothic Expressions
-          </h3>
+          <h3 className="text-3xl md:text-4xl font-medium">{firstItem.name}</h3>
 
-          <p className="text-muted-foreground max-w-md">
-            A dark editorial exploration of distorted beauty, classical forms,
-            and modern rebellion. Each piece exists between art and fashion.
-          </p>
+          <span className="text-muted-foreground max-w-md">
+            <PortableText value={firstItem.about || []} />
+          </span>
 
           <div className="flex items-center gap-6 text-sm tracking-widest">
-            <span className="text-muted-foreground">2025 EDITION</span>
+            <span className="text-muted-foreground">
+              {firstItem?.creationDate &&
+                new Date(firstItem?.creationDate).getFullYear()}{" "}
+              EDITION
+            </span>
 
             <Link href={"/art"} className="text-primary hover:underline">
               VIEW COLLECTION →
@@ -60,20 +64,21 @@ export default function CollectionSection() {
 
       {/* Secondary grid */}
       <div className="mt-24 grid grid-cols-2 gap-6 md:grid-cols-3">
-        {collectionItems.map((img, i) => (
+        {homePageCollection.map((item, i) => (
           <div key={i} className="relative flex flex-col gap-2">
             <div className="relative aspect-3/4">
               <Image
-                src={img}
-                alt="Collection artwork"
+                src={item.image.url ? urlFor(item.image.url).url() : ""}
+                alt={item.image.alt || "Collection artwork"}
                 fill
                 className="object-cover brightness-95 contrast-110"
               />
             </div>
             <span className="relative flex items-center gap-2">
-              <h3 className="text-sm tracking-[0.3em] text-muted-foreground">
+              <h3 className="text-xs tracking-tight md:text-sm md:tracking-[0.3em] text-muted-foreground">
                 {/*PRICE*/}
-                $400
+                {item.price?.currency?.toUpperCase()}:{" "}
+                {item.price?.amount && formatCurrency(item.price?.amount)}
                 {/*<span className=" text-foreground tracking-normal">$400</span>*/}
               </h3>
               <Button

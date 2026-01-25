@@ -1,0 +1,29 @@
+import { defineQuery } from "next-sanity";
+
+export const HOME_QUERY = defineQuery(`
+{
+  "newPostImages": *[_type == "collection"]
+    | order(_createdAt desc)[0...4]{
+      _id,
+      "image": {
+        "url": artImage.asset->url,
+        "alt": artImage.alt
+      }
+    },
+
+  "HomePageCollections": *[_type == "collection"]| order(_createdAt desc)[0...4]{
+    name,
+    "slug": slug.current,
+    price{
+      amount,
+      currency
+    },
+    creationDate,
+    about,
+    "image": {
+      "url": artImage.asset->url,
+      "alt": artImage.alt
+    }
+  }
+}
+`);
