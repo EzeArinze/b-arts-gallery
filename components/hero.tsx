@@ -1,6 +1,6 @@
 import Image from "next/image";
 import hero from "@/public/hero.webp";
-import AuthUser from "@/app/_components/auth-user";
+import AuthUser from "@/app/(art-page)/_components/auth-user";
 import { ThemeToggle } from "./theme-toggle";
 import Logo from "./logo";
 

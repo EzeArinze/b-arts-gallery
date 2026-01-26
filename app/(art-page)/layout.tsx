@@ -1,5 +1,5 @@
 import { SanityLive } from "@/sanity/lib/live";
-import { Footer } from "../_components/footer";
+import { Footer } from "./_components/footer";
 
 export default function RootLayout({
   children,
