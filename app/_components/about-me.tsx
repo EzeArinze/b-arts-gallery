@@ -3,7 +3,7 @@ import artist from "@/public/hero.webp";
 
 export default function AboutArtist() {
   return (
-    <section className="relative w-full bg-background px-6 py-12 md:px-16 lg:min-h-screen lg:flex lg:flex-col lg:justify-center">
+    <section className=" w-full bg-background px-6 py-12 md:px-16 lg:min-h-screen lg:flex lg:flex-col lg:justify-center">
       {/* Header */}
       <div className="mb-12 lg:mb-10">
         <span className="text-xs tracking-[0.35em] text-muted-foreground">

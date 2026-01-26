@@ -30,8 +30,8 @@ export default function CollectionSection({
 
       {/* Main feature */}
       <div className="grid gap-12 md:grid-cols-2">
-        {/* Image */}
-        <div className="relative aspect-4/5">
+        {/* Image : added max-h-[95vh] lg:w-[40vw]*/}
+        <div className="relative aspect-3/4 max-h-[95vh] lg:w-[40vw]">
           <Image
             src={firstItem.image.url ? urlFor(firstItem.image.url).url() : ""}
             alt={firstItem.image.alt || "Featured collection"}
@@ -66,24 +66,23 @@ export default function CollectionSection({
       <div className="mt-24 grid grid-cols-2 gap-6 md:grid-cols-3">
         {homePageCollection.map((item, i) => (
           <div key={i} className="relative flex flex-col gap-2">
-            <div className="relative aspect-3/4">
+            <Link href={`/art/${item.slug}`} className="relative aspect-3/4">
               <Image
                 src={item.image.url ? urlFor(item.image.url).url() : ""}
                 alt={item.image.alt || "Collection artwork"}
                 fill
                 className="object-cover brightness-95 contrast-110"
               />
-            </div>
+            </Link>
             <span className="relative flex items-center gap-2">
               <h3 className="text-xs tracking-tight md:text-sm md:tracking-[0.3em] text-muted-foreground">
                 {/*PRICE*/}
                 {item.price?.currency?.toUpperCase()}:{" "}
                 {item.price?.amount && formatCurrency(item.price?.amount)}
-                {/*<span className=" text-foreground tracking-normal">$400</span>*/}
               </h3>
               <Button
                 variant={"ghost"}
-                className="md:text-sm font-semibold rounded-none hover:border-2 transition-all duration-100 ease-out  border border-transparent px-4 py-1 text-xs tracking-widest hover:flex-1 hover:bg-none hover:border-primary hover:text-primary"
+                className="md:text-sm font-semibold rounded-none hover:border-2 transition-all duration-100 ease-out  border border-transparent px-4 py-1 text-xs tracking-widest hover:flex-1 hover:bg-primary/5 hover:border-primary/50 hover:text-primary"
               >
                 BUY
               </Button>

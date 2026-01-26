@@ -6,7 +6,7 @@ import Logo from "./logo";
 
 export default function GothifHero() {
   return (
-    <section className="relative h-full md:h-full w-full overflow-hidden bg-black">
+    <section className="relative h-screen  w-full overflow-hidden bg-black">
       <Image
         src={hero}
         alt="Gothif background"
@@ -23,20 +23,27 @@ export default function GothifHero() {
         <div className="absolute top-6 left-[10%] text-xs font-extrabold tracking-[0.35em] text-primary">
           <Logo />
         </div>
-        <div className="absolute top-6 left-1/2 -translate-x-1/2 text-xs font-bold md:font-extrabold tracking-[0.35em] text-primary blur-[0.4px]">
+        <div className="hidden md:block md:absolute top-6 left-1/2 -translate-x-1/2 text-xs font-bold md:font-extrabold tracking-[0.35em] text-primary blur-[0.4px]">
           BUMEZ ART PRESENTS
         </div>
+
         <div className="absolute flex items-center gap-2 top-6 right-[10%]">
           <AuthUser />
           <ThemeToggle />
         </div>
 
-        <h1 className="text-primary leading-[0.85] text-[22vw] md:text-[18vw]">
-          B-ArTS-GALLery
-        </h1>
+        <div>
+          <span className="md:hidden text-xs font-bold md:font-extrabold tracking-[0.35em] text-primary blur-[0.4px] mb-1">
+            BUMEZ ART PRESENTS
+          </span>
+          <h1 className="text-primary leading-[0.85] text-[22vw] md:text-[18vw]">
+            {/*B-ArTS-GALLery*/}
+            B-ARTS-GALLERY
+          </h1>
+        </div>
 
         <div className="absolute bottom-8 left-6 right-6 md:left-16 md:right-16 flex items-center gap-4 text-xs tracking-[0.3em] text-primary">
-          <span className="whitespace-nowrap">A OLD WAYS STORY</span>
+          <span className="whitespace-nowrap">AN OLD WAYS STORY</span>
 
           <div className="h-px flex-1 bg-primary" />
 

@@ -3,8 +3,8 @@ import { Anton } from "next/font/google";
 import { ThemeProvider } from "@/providers/theme-providers";
 import AuthProvider from "@/providers/auth-provider";
 import "./globals.css";
-import { Footer } from "./_components/footer";
-import { SanityLive } from "@/sanity/lib/live";
+// import { Footer } from "./_components/footer";
+// import { SanityLive } from "@/sanity/lib/live";
 import { Toaster } from "@/components/ui/sonner";
 
 const anton = Anton({
@@ -35,9 +35,9 @@ export default function RootLayout({
           >
             {children}
 
-            <Footer />
+            {/*<Footer />*/}
           </ThemeProvider>
-          <SanityLive />
+          {/*<SanityLive />*/}
           <Toaster closeButton richColors position="top-right" />
         </body>
       </html>
