@@ -34,6 +34,13 @@ export const collectionSchema = defineType({
     }),
 
     defineField({
+      title: "Artist",
+      name: "artist",
+      type: "string",
+      validation: (rule) => rule.required().error("who is the artist"),
+    }),
+
+    defineField({
       title: "Art Image",
       name: "artImage",
       type: "image",
@@ -120,12 +127,12 @@ export const collectionSchema = defineType({
     }),
   ],
   preview: {
-    select: { name: "name", media: "image", date: "creationDate" },
+    select: { name: "name", media: "artImage", date: "creationDate" },
     prepare: ({ name, media, date }) => {
       return {
         title: name,
         subtitle: date ? `Created on ${date}` : "No creation date",
-        media: media,
+        media,
       };
     },
   },

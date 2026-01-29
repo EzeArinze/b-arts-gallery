@@ -277,6 +277,13 @@
         },
         "optional": true
       },
+      "artist": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
+      },
       "artImage": {
         "type": "objectAttribute",
         "value": {

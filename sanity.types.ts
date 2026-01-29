@@ -55,6 +55,7 @@ export type Collection = {
   _rev: string;
   name?: string;
   slug?: Slug;
+  artist?: string;
   artImage?: {
     asset?: {
       _ref: string;
@@ -223,7 +224,7 @@ export type AllSanitySchemaTypes = Order | Collection | BlockContent | SanityIma
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./sanity/lib/queries.ts
 // Variable: HOME_QUERY
-// Query: {  "newPostImages": *[_type == "collection"]    | order(_createdAt desc)[0...4]{      _id,      "image": {        "url": artImage.asset->url,        "alt": artImage.alt      }    },  "HomePageCollections": *[_type == "collection"][0...4]{    name,    "slug": slug.current,    price{      amount,      currency    },    creationDate,    about,    "image": {      "url": artImage.asset->url,      "alt": artImage.alt    }  }}
+// Query: {  "newPostImages": *[_type == "collection"]    | order(_createdAt desc)[0...4]{      _id,      "image": {        "url": artImage.asset->url,        "alt": artImage.alt      }    },  "HomePageCollections": *[_type == "collection"]| order(_createdAt desc)[0...4]{    name,    "slug": slug.current,    price{      amount,      currency    },    creationDate,    about,    "image": {      "url": artImage.asset->url,      "alt": artImage.alt    }  }}
 export type HOME_QUERYResult = {
   newPostImages: Array<{
     _id: string;
@@ -247,11 +248,55 @@ export type HOME_QUERYResult = {
     };
   }>;
 };
+// Variable: ART_DETAILS
+// Query: *[_type == "collection" && slug.current == $slug][0]{  name,  about,  dimensions,  available,  artist,  price{    amount,    currency  },  "image": {    "url": artImage.asset->url,    "alt": artImage.alt  },  creationDate,  }
+export type ART_DETAILSResult = {
+  name: string | null;
+  about: BlockContent | null;
+  dimensions: {
+    width?: number;
+    height?: number;
+    unit?: "cm" | "in";
+  } | null;
+  available: boolean | null;
+  artist: string | null;
+  price: {
+    amount: number | null;
+    currency: "EUR" | "NGN" | "USD" | null;
+  } | null;
+  image: {
+    url: string | null;
+    alt: string | null;
+  };
+  creationDate: string | null;
+} | null;
+// Variable: COLLECTIONS
+// Query: {  "collections": *[_type == "collection"]    | order(_createdAt desc)[$start...$end]{      name,      artist,      "slug": slug.current,      price{        amount,        currency      },      creationDate,      about,      "image": {        "url": artImage.asset->url,        "alt": artImage.alt      }    },  "total": count(*[_type == "collection"])}
+export type COLLECTIONSResult = {
+  collections: Array<{
+    name: string | null;
+    artist: string | null;
+    slug: string | null;
+    price: {
+      amount: number | null;
+      currency: "EUR" | "NGN" | "USD" | null;
+    } | null;
+    creationDate: string | null;
+    about: BlockContent | null;
+    image: {
+      url: string | null;
+      alt: string | null;
+    };
+  }>;
+  total: number;
+};
 
 // Query TypeMap
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
-    "\n{\n  \"newPostImages\": *[_type == \"collection\"]\n    | order(_createdAt desc)[0...4]{\n      _id,\n      \"image\": {\n        \"url\": artImage.asset->url,\n        \"alt\": artImage.alt\n      }\n    },\n\n  \"HomePageCollections\": *[_type == \"collection\"][0...4]{\n    name,\n    \"slug\": slug.current,\n    price{\n      amount,\n      currency\n    },\n    creationDate,\n    about,\n    \"image\": {\n      \"url\": artImage.asset->url,\n      \"alt\": artImage.alt\n    }\n  }\n}\n": HOME_QUERYResult;
+    "\n{\n  \"newPostImages\": *[_type == \"collection\"]\n    | order(_createdAt desc)[0...4]{\n      _id,\n      \"image\": {\n        \"url\": artImage.asset->url,\n        \"alt\": artImage.alt\n      }\n    },\n\n  \"HomePageCollections\": *[_type == \"collection\"]| order(_createdAt desc)[0...4]{\n    name,\n    \"slug\": slug.current,\n    price{\n      amount,\n      currency\n    },\n    creationDate,\n    about,\n    \"image\": {\n      \"url\": artImage.asset->url,\n      \"alt\": artImage.alt\n    }\n  }\n}\n": HOME_QUERYResult;
+    "*[_type == \"collection\" && slug.current == $slug][0]{\n  name,\n  about,\n  dimensions,\n  available,\n  artist,\n  price{\n    amount,\n    currency\n  },\n  \"image\": {\n    \"url\": artImage.asset->url,\n    \"alt\": artImage.alt\n  },\n  creationDate,\n  }": ART_DETAILSResult;
+    "\n{\n  \"collections\": *[_type == \"collection\"]\n    | order(_createdAt desc)[$start...$end]{\n      name,\n      artist,\n      \"slug\": slug.current,\n      price{\n        amount,\n        currency\n      },\n      creationDate,\n      about,\n      \"image\": {\n        \"url\": artImage.asset->url,\n        \"alt\": artImage.alt\n      }\n    },\n  \"total\": count(*[_type == \"collection\"])\n}\n": COLLECTIONSResult;
   }
 }
