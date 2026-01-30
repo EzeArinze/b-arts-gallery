@@ -76,14 +76,15 @@ export const collectionSchema = defineType({
       ],
     }),
 
-    // defineField({
-    //   name: "size",
-    //   title: "Size",
-    //   type: "string",
-    //   validation: (rule) =>
-    //     rule.required().warning("art size was not provided"),
-    // }),
-    //
+    defineField({
+      name: "isSold",
+      title: "IS_SOLD",
+      type: "boolean",
+      initialValue: false,
+      description: "is this art sold?",
+      validation: (rule) => rule.required().warning("art sold is not verified"),
+    }),
+
     defineField({
       name: "dimensions",
       title: "Dimensions",

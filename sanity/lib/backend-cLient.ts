@@ -7,5 +7,5 @@ export const backendClient = createClient({
   dataset,
   apiVersion,
   useCdn: false,
-  token: process.env.SANITY_API_TOKEN,
+  token: process.env.SANITY_API_TOKEN!,
 });
