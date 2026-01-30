@@ -1,3 +1,5 @@
+"use server";
+
 import { sanityFetch } from "@/sanity/lib/live";
 
 import { HOME_QUERY } from "../sanity/lib/queries";

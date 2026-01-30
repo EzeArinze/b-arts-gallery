@@ -67,3 +67,9 @@ export const COLLECTIONS = defineQuery(`
   "total": count(*[_type == "collection"])
 }
 `);
+
+export const PROCESSED_ORDER =
+  defineQuery(`*[_type == "order" && payment.reference == $reference][0]{
+    _id,
+    }
+`);

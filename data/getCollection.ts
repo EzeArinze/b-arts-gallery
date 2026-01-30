@@ -1,3 +1,5 @@
+"use server";
+
 import { sanityFetch } from "@/sanity/lib/live";
 import { COLLECTIONS } from "@/sanity/lib/queries";
 import { PAGE_SIZE } from "@/utils/constant";

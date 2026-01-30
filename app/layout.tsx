@@ -6,6 +6,7 @@ import "./globals.css";
 // import { Footer } from "./_components/footer";
 // import { SanityLive } from "@/sanity/lib/live";
 import { Toaster } from "@/components/ui/sonner";
+import ScriptComponent from "@/providers/script-component";
 
 const anton = Anton({
   variable: "--font-anton",
@@ -39,6 +40,7 @@ export default function RootLayout({
           </ThemeProvider>
           {/*<SanityLive />*/}
           <Toaster closeButton richColors position="top-right" />
+          <ScriptComponent />
         </body>
       </html>
     </AuthProvider>

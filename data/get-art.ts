@@ -1,3 +1,5 @@
+"use server";
+
 import { sanityFetch } from "@/sanity/lib/live";
 import { ART_DETAILS } from "@/sanity/lib/queries";
 
