@@ -20,21 +20,17 @@ function AuthUser() {
           </Button>
         </Link>
       ) : (
-        <div>
-          <UserButton
-            appearance={{
-              elements: {
-                userButtonBox: {
-                  flexDirection: "row-reverse",
-                  gap: "0px",
-                  color: `var(--primary)`,
-                  padding: "1px",
-                },
+        <UserButton
+          appearance={{
+            elements: {
+              userButtonBox: {
+                color: `var(--primary)`,
+                marginTop: "5px",
               },
-            }}
-            showName
-          />
-        </div>
+            },
+          }}
+          // showName
+        />
       )}
     </div>
   );

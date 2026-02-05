@@ -9,7 +9,20 @@ async function CheckOutPage() {
     redirect("/sign-in");
   }
 
-  return <CheckOutForm user={user} />;
+  const plainUser = {
+    id: user.id,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    emailAddress: user.emailAddresses[0]?.emailAddress,
+    imageUrl: user.imageUrl,
+    fullName: user.fullName,
+  };
+
+  return (
+    <div className="min-h-screen w-full flex items-center justify-center px-6">
+      <CheckOutForm user={plainUser} />
+    </div>
+  );
 }
 
 export default CheckOutPage;
