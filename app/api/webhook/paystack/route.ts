@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
 import {
   isOrderAlreadyProcessed,
-  saveOrderTransaction,
+  // saveOrderTransaction,
 } from "@/data/actions/mark-processed";
 
 const secret = process.env.PAYSTACK_SECRET!;
@@ -26,12 +26,14 @@ export async function POST(req: NextRequest) {
         const { transfer_code, reason } = data;
         // do something
         // send email notification
+        console.log(transfer_code, reason);
         break;
       }
       case "transfer.reversed": {
         const { transfer_code } = data;
         // do something
         // send email notification
+        console.log(transfer_code);
         break;
       }
       default:
@@ -54,7 +56,7 @@ export async function POST(req: NextRequest) {
       if (await isOrderAlreadyProcessed(reference || transfer_code)) return;
 
       // save to db and update art to be sold
-      await saveOrderTransaction({ orderDoc: {}, artworkIds: [] });
+      // await saveOrderTransaction({ orderDoc: {}, artworkIds: [] });
 
       return NextResponse.json(
         {

@@ -1,8 +1,8 @@
 import Image from "next/image";
 import hero from "@/public/hero.webp";
-import AuthUser from "@/app/(art-page)/_components/auth-user";
-import { ThemeToggle } from "./theme-toggle";
-import Logo from "./logo";
+// import AuthUser from "@/app/(art-page)/_components/auth-user";
+// import { ThemeToggle } from "./theme-toggle";
+// import Logo from "./logo";
 
 export default function GothifHero() {
   return (
@@ -20,17 +20,9 @@ export default function GothifHero() {
 
       {/* Content */}
       <div className="relative z-10 flex h-full w-full flex-col items-center justify-center px-6 md:px-16 text-center">
-        <div className="absolute top-6 left-[10%] text-xs font-extrabold tracking-[0.35em] text-primary">
-          <Logo />
-        </div>
-        <div className="hidden md:block md:absolute top-6 left-1/2 -translate-x-1/2 text-xs font-bold md:font-extrabold tracking-[0.35em] text-primary blur-[0.4px]">
-          BUMEZ ART PRESENTS
-        </div>
+        {/*NAV*/}
 
-        <div className="absolute flex items-center gap-2 top-6 right-[10%]">
-          <AuthUser />
-          <ThemeToggle />
-        </div>
+        {/*NAV*/}
 
         <div>
           <span className="md:hidden text-xs font-bold md:font-extrabold tracking-[0.35em] text-primary blur-[0.4px] mb-1">
