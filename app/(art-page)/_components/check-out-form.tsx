@@ -45,12 +45,12 @@ interface iAppProps {
 
 function CheckOutForm(props: iAppProps) {
   const { firstName, lastName } = props.user;
-  const name = lastName && firstName ? firstName + lastName : "";
+  const full_name = lastName && firstName ? firstName + lastName : "";
 
   const form = useForm({
     resolver: zodResolver(orderFormSchema),
     defaultValues: {
-      fullName: props.user.fullName || name,
+      fullName: props.user.fullName || full_name,
       email: props.user.emailAddress,
       address: "",
       phone: "",

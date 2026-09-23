@@ -43,7 +43,9 @@ async function ArtDetailsPage({ params }: { params: Params }) {
           {/* Metadata */}
           <div className="mb-8 space-y-2 text-xs tracking-[0.3em] uppercase ">
             <div>{art.artist}</div>
-            <div>{new Date(art.creationDate).getFullYear()}</div>
+            <div>
+              {art?.creationDate && new Date(art.creationDate).getFullYear()}
+            </div>
             {/*<div>{art.medium}</div>*/}
             <div>
               {art.dimensions?.width} * {art.dimensions?.width}
@@ -63,20 +65,12 @@ async function ArtDetailsPage({ params }: { params: Params }) {
           <div className="flex items-center justify-between">
             <div className="tracking-tight text-sm md:tracking-[0.3em] uppercase">
               {art.price?.currency?.toUpperCase()}:{" "}
-              {formatCurrency(art.price?.amount)}
+              {art.price?.amount && formatCurrency(art.price.amount)}
             </div>
 
             <Button
               variant={"outline"}
-              className="
-                border border-primary
-                px-8 py-3
-                 text-xs tracking-[0.35em]
-                hover:bg-primary hover:text-primary
-                transition
-                rounded-none
-
-              "
+              className=" border border-primary px-8 py-3 text-xs tracking-[0.35em] hover:bg-primary hover:text-primary transition rounded-none"
             >
               BUY ARTWORK
             </Button>
