@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 import { HOME_QUERYResult } from "@/sanity.types";
 import { urlFor } from "@/sanity/lib/image";
@@ -14,7 +14,10 @@ export default function CollectionSection({
   const firstItem = homePageCollection[0];
 
   return (
-    <section className="relative w-full bg-background px-6 py-24 md:px-16">
+    <section
+      className="relative w-full bg-background px-6 py-24 md:px-16"
+      id={"shop"}
+    >
       {/* Header */}
       <div className="mb-16 flex flex-col gap-4">
         <span className="text-xs tracking-[0.35em] text-muted-foreground">
@@ -80,12 +83,16 @@ export default function CollectionSection({
                 {item.price?.currency?.toUpperCase()}:{" "}
                 {item.price?.amount && formatCurrency(item.price?.amount)}
               </h3>
-              <Button
-                variant={"ghost"}
-                className="md:text-sm font-semibold rounded-none hover:border-2 transition-all duration-100 ease-out  border border-transparent px-4 py-1 text-xs tracking-widest hover:flex-1 hover:bg-primary/5 hover:border-primary/50 hover:text-primary"
+              <Link
+                href={"/art/chechout"}
+                className={buttonVariants({
+                  variant: "ghost",
+                  className:
+                    "md:text-sm font-semibold rounded-none hover:border-2 transition-all duration-100 ease-out  border border-transparent px-4 py-1 text-xs tracking-widest hover:flex-1 hover:bg-primary/5 hover:border-primary/50 hover:text-primary",
+                })}
               >
                 BUY
-              </Button>
+              </Link>
             </span>
           </div>
         ))}

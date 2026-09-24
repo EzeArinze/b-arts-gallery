@@ -1,9 +1,10 @@
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { getART } from "@/data/get-art";
 import { urlFor } from "@/sanity/lib/image";
 import { formatCurrency } from "@/utils/format-currency";
 import { PortableText } from "next-sanity";
 import Image from "next/image";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 type Params = Promise<{ slug: string }>;
@@ -68,12 +69,16 @@ async function ArtDetailsPage({ params }: { params: Params }) {
               {art.price?.amount && formatCurrency(art.price.amount)}
             </div>
 
-            <Button
-              variant={"outline"}
-              className=" border border-primary px-8 py-3 text-xs tracking-[0.35em] hover:bg-primary hover:text-primary transition rounded-none"
+            <Link
+              href={"/art/checkout"}
+              className={buttonVariants({
+                variant: "outline",
+                className:
+                  " border border-primary px-8 py-3 text-xs tracking-[0.35em] hover:bg-primary hover:text-white transition rounded-none",
+              })}
             >
               BUY ARTWORK
-            </Button>
+            </Link>
           </div>
 
           {/* Availability */}
