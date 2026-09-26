@@ -114,6 +114,7 @@ export default function GothifHero() {
             fill
             priority={i === 0}
             style={{ objectPosition: w.pos }}
+            loading="eager"
             className={`object-cover contrast-110 transition-[opacity,filter] duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${
               i === active ? "opacity-100 blur-0" : "opacity-0 blur-[2px]"
             }`}
