@@ -121,7 +121,7 @@ export default function CollectionSection({
                     {item.price?.amount && formatCurrency(item.price.amount)}
                   </span>
                   <Link
-                    href="/art/chechout"
+                    href="/art/checkout"
                     className={buttonVariants({
                       variant: "ghost",
                       className:

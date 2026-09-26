@@ -4,15 +4,11 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import hero from "@/public/hero.webp";
 
-/* ------------------------------------------------------------------ *
- * Placeholder works. Swap `src` for real artwork imports; the
- * objectPosition values only exist so the placeholders differ visibly.
- * ------------------------------------------------------------------ */
 const WORKS = [
   {
     id: "w1",
     title: "I (1)",
-    artist: "Artist Name",
+    artist: "Bumez",
     price: "$4,200",
     src: hero,
     pos: "50% 50%",
@@ -20,7 +16,7 @@ const WORKS = [
   {
     id: "w2",
     title: "II (2)",
-    artist: "Artist Name",
+    artist: "Bumez",
     price: "$2,800",
     src: hero,
     pos: "12% 40%",
@@ -28,7 +24,7 @@ const WORKS = [
   {
     id: "w3",
     title: "III (3)",
-    artist: "Artist Name",
+    artist: "Bumez",
     price: "$6,500",
     src: hero,
     pos: "88% 60%",
@@ -174,7 +170,7 @@ export default function GothifHero() {
               <div>
                 <p>{w.title}</p>
                 <p className="opacity-60">{w.artist}</p>
-                <p>{w.price}</p>
+                {/*<p>{w.price}</p>*/}
               </div>
             </div>
           ))}
