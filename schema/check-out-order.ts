@@ -20,9 +20,11 @@ export const orderFormSchema = z.object({
     .min(1, "Address is required")
     .min(5, "Address is too short"),
 
-  terms: z.literal(true, {
-    message: "Please accept the terms and conditions to continue",
-  }),
+  terms: z
+    .boolean()
+    .refine((v) => v === true, {
+      error: "Accept terms and services to continue",
+    }),
 });
 
 export type orderFormType = z.infer<typeof orderFormSchema>;

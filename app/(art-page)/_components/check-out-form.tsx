@@ -3,7 +3,6 @@
 import { orderFormSchema, orderFormType } from "@/schema/check-out-order";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
-// import type { User } from "@clerk/nextjs/server";
 import {
   Card,
   CardContent,
@@ -15,7 +14,6 @@ import {
 import {
   Field,
   FieldContent,
-  FieldDescription,
   FieldError,
   FieldLabel,
 } from "@/components/ui/field";
@@ -43,54 +41,73 @@ interface iAppProps {
   };
 }
 
+
+const labelClass =
+  "text-[11px] font-medium uppercase tracking-[0.2em] text-muted-foreground";
+
+
+const inputClass =
+  "h-11 rounded-none border-0 border-b border-muted/40 bg-transparent px-0 shadow-none transition-[border-color] duration-200 focus-visible:border-primary focus-visible:ring-0 aria-invalid:border-destructive px-1";
+
 function CheckOutForm(props: iAppProps) {
   const { firstName, lastName } = props.user;
-  const full_name = lastName && firstName ? firstName + lastName : "";
+  const joinedName = [firstName, lastName].filter(Boolean).join(" ");
 
   const form = useForm({
     resolver: zodResolver(orderFormSchema),
+    mode: "onTouched",
     defaultValues: {
-      fullName: props.user.fullName || full_name,
-      email: props.user.emailAddress,
+      fullName: props.user.fullName || joinedName,
+      email: props.user.emailAddress ?? "",
       address: "",
       phone: "",
       state: "",
-      terms: undefined,
+      terms: false,
     },
   });
 
-  function handleSubmit(value: orderFormType) {
+  const { isSubmitting } = form.formState;
+
+  async function handleSubmit(value: orderFormType) {
+    // TODO: create the order / hand off to the payment step
     console.log(value);
   }
 
   return (
-    <Card className="w-full max-w-lg md:max-w-xl border-muted/40 bg-background/80 backdrop-blur-sm shadow-none">
+    <Card className="w-full border-muted/40 bg-background/80 shadow-none backdrop-blur-sm">
       <CardHeader>
         <CardTitle className="text-2xl font-medium tracking-tight">
-          Checkout
+          Delivery details
         </CardTitle>
         <CardDescription className="text-xs tracking-wide text-muted-foreground">
-          Complete your details to proceed
+          Tell us where your artwork should go
         </CardDescription>
       </CardHeader>
+
       <CardContent>
         <form
           id="checkout-form"
           onSubmit={form.handleSubmit(handleSubmit)}
-          className="space-y-6"
+          className="grid grid-cols-1 gap-x-6 gap-y-7 sm:grid-cols-2"
         >
           <Controller
             name="fullName"
             control={form.control}
             render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor="fullName">FullName</FieldLabel>
+              <Field
+                data-invalid={fieldState.invalid}
+                className="sm:col-span-2"
+              >
+                <FieldLabel htmlFor="fullName" className={labelClass}>
+                  Full name
+                </FieldLabel>
                 <Input
                   {...field}
                   id="fullName"
+                  autoComplete="name"
                   aria-invalid={fieldState.invalid}
-                  placeholder="FullName"
-                  className="rounded-none border-muted/40 bg-transparent px-0 focus-visible:ring-0 focus-visible:border-primary"
+                  placeholder="Your full name"
+                  className={inputClass}
                 />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
@@ -98,25 +115,26 @@ function CheckOutForm(props: iAppProps) {
               </Field>
             )}
           />
+
           <Controller
             name="email"
             control={form.control}
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <FieldLabel
-                  htmlFor="email"
-                  className="text-xs uppercase tracking-widest text-muted-foreground"
-                >
-                  Email Address
+                <FieldLabel htmlFor="email" className={labelClass}>
+                  Email address
                 </FieldLabel>
                 <Input
                   {...field}
                   id="email"
-                  aria-invalid={fieldState.invalid}
-                  placeholder="email"
                   type="email"
-                  className="rounded-none border-muted/40 bg-transparent px-0 focus-visible:ring-0 focus-visible:border-primary"
-                  disabled
+                  autoComplete="email"
+                  aria-invalid={fieldState.invalid}
+                  placeholder="you@example.com"
+                  // readOnly (not disabled) so it stays selectable and
+                  // screen readers still announce it.
+                  readOnly
+                  className={`${inputClass} text-muted-foreground`}
                 />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
@@ -130,19 +148,18 @@ function CheckOutForm(props: iAppProps) {
             control={form.control}
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <FieldLabel
-                  htmlFor="phone"
-                  className="text-xs uppercase tracking-widest text-muted-foreground"
-                >
-                  Phone Number
+                <FieldLabel htmlFor="phone" className={labelClass}>
+                  Phone number
                 </FieldLabel>
                 <Input
                   {...field}
                   id="phone"
-                  aria-invalid={fieldState.invalid}
-                  placeholder="phone"
                   type="tel"
-                  className="rounded-none border-muted/40 bg-transparent px-0 focus-visible:ring-0 focus-visible:border-primary"
+                  inputMode="tel"
+                  autoComplete="tel"
+                  aria-invalid={fieldState.invalid}
+                  placeholder="Phone number"
+                  className={inputClass}
                 />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
@@ -155,19 +172,20 @@ function CheckOutForm(props: iAppProps) {
             name="address"
             control={form.control}
             render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel
-                  htmlFor="address"
-                  className="text-xs uppercase tracking-widest text-muted-foreground"
-                >
-                  address
+              <Field
+                data-invalid={fieldState.invalid}
+                className="sm:col-span-2"
+              >
+                <FieldLabel htmlFor="address" className={labelClass}>
+                  Delivery address
                 </FieldLabel>
                 <Input
                   {...field}
                   id="address"
+                  autoComplete="street-address"
                   aria-invalid={fieldState.invalid}
-                  placeholder="address"
-                  className="rounded-none border-muted/40 bg-transparent px-0 focus-visible:ring-0 focus-visible:border-primary"
+                  placeholder="Street, area, landmark"
+                  className={inputClass}
                 />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
@@ -180,21 +198,13 @@ function CheckOutForm(props: iAppProps) {
             name="state"
             control={form.control}
             render={({ field, fieldState }) => (
-              <Field orientation="responsive" data-invalid={fieldState.invalid}>
-                <FieldContent>
-                  <FieldLabel
-                    htmlFor="state"
-                    className="text-xs uppercase tracking-widest text-muted-foreground"
-                  >
-                    State/City
-                  </FieldLabel>
-                  <FieldDescription className="text-[10px] tracking-wide">
-                    Select your city for devlivery
-                  </FieldDescription>
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </FieldContent>
+              <Field
+                data-invalid={fieldState.invalid}
+                className="sm:col-span-2"
+              >
+                <FieldLabel htmlFor="state" className={labelClass}>
+                  State / City
+                </FieldLabel>
                 <Select
                   name={field.name}
                   value={field.value}
@@ -203,14 +213,11 @@ function CheckOutForm(props: iAppProps) {
                   <SelectTrigger
                     id="state"
                     aria-invalid={fieldState.invalid}
-                    className="rounded-none border-muted/40 bg-transparent px-0 focus:ring-0"
+                    className={`${inputClass} w-full justify-between`}
                   >
-                    <SelectValue placeholder="Select" />
+                    <SelectValue placeholder="Select your delivery city" />
                   </SelectTrigger>
-                  <SelectContent
-                    position="item-aligned"
-                    className="rounded-none border-muted/40"
-                  >
+                  <SelectContent className="max-h-72 rounded-none border-muted/40">
                     <SelectItem value="auto">Auto</SelectItem>
                     <SelectSeparator />
                     {states.map((state) => (
@@ -220,6 +227,9 @@ function CheckOutForm(props: iAppProps) {
                     ))}
                   </SelectContent>
                 </Select>
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
               </Field>
             )}
           />
@@ -228,26 +238,30 @@ function CheckOutForm(props: iAppProps) {
             name="terms"
             control={form.control}
             render={({ field, fieldState }) => (
-              <Field orientation="horizontal">
+              <Field
+                orientation="horizontal"
+                data-invalid={fieldState.invalid}
+                className="items-start sm:col-span-2"
+              >
                 <Checkbox
                   id="terms"
                   name={field.name}
                   checked={field.value}
                   onCheckedChange={field.onChange}
-                  className="rounded-none border-muted/40"
+                  aria-invalid={fieldState.invalid}
+                  className="mt-0.5 rounded-none border-muted/40"
                 />
-                <FieldLabel
-                  htmlFor="terms"
-                  className="text-xs text-muted-foreground font-normal"
-                >
-                  Terms
-                </FieldLabel>
-                <FieldDescription className="text-[10px] tracking-wide">
-                  Accept terms to continue
-                </FieldDescription>
-                {fieldState.invalid && (
-                  <FieldError errors={[fieldState.error]} />
-                )}
+                <FieldContent>
+                  <FieldLabel
+                    htmlFor="terms"
+                    className="text-xs font-normal leading-relaxed text-muted-foreground"
+                  >
+                    I agree to the terms of sale and delivery policy
+                  </FieldLabel>
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </FieldContent>
               </Field>
             )}
           />
@@ -255,16 +269,15 @@ function CheckOutForm(props: iAppProps) {
       </CardContent>
 
       <CardFooter className="border-t border-muted/30 pt-6">
-        <Field orientation="responsive">
-          <Button
-            type="submit"
-            form="checkout-form"
-            variant="outline"
-            className="w-full rounded-none border-muted/40 tracking-widest text-xs hover:border-primary hover:bg-transparent"
-          >
-            CONTINUE
-          </Button>
-        </Field>
+        <Button
+          type="submit"
+          form="checkout-form"
+          variant="outline"
+          disabled={isSubmitting}
+          className="h-12 w-full rounded-none border-muted/40 text-xs tracking-[0.3em] transition-[transform,border-color,background-color] duration-150 hover:border-primary hover:bg-transparent active:scale-[0.97] motion-reduce:active:scale-100"
+        >
+          {isSubmitting ? "PLEASE WAIT" : "CONTINUE"}
+        </Button>
       </CardFooter>
     </Card>
   );
