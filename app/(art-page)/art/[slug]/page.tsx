@@ -152,14 +152,14 @@ async function ArtDetailsPage({ params }: { params: Params }) {
           ← All works
         </Link>
 
-        <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-20">
+        <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-10">
           {/* Artwork: shell + mat, sized to the work so nothing is cropped */}
           <div className="flex justify-center lg:justify-start">
             {art.image.url && (
               <div
-                className={`w-fit max-w-full rounded-[14px] bg-white/3 p-2 ring-1 ring-white/10 shadow-[0_50px_100px_-40px_rgba(0,0,0,0.7)] ${ENTER} starting:scale-[0.985]`}
+                className={`w-fit max-w-full rounded-[14px] ${ENTER} starting:scale-[0.985]`}
               >
-                <div className="rounded-md bg-zinc-900 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] md:p-6">
+                <div className="rounded-md bg-zinc-900 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
                   <Image
                     src={urlFor(art.image.url).width(1600).auto("format").url()}
                     alt={art.image.alt || art.name || ""}

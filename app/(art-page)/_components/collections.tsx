@@ -54,7 +54,7 @@ export default function CollectionSection({
               fill
               loading="eager"
               sizes="(min-width: 768px) 40vw, 100vw"
-              className="object-cover brightness-95 contrast-110 transition-[transform,filter] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02] group-hover:brightness-100"
+              className="object-cover brightness-95 contrast-110 transition-transform duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.025] group-hover:brightness-100"
             />
           </Link>
 
@@ -97,7 +97,7 @@ export default function CollectionSection({
                     alt={item.image.alt || "Collection artwork"}
                     fill
                     sizes="(min-width: 768px) 33vw, 50vw"
-                    className="object-cover brightness-95 contrast-110 transition-[transform,filter] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02] group-hover:brightness-100"
+                    className="object-cover brightness-95 contrast-110 transition-transform duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.025] group-hover:brightness-100"
                   />
                 </Link>
 
