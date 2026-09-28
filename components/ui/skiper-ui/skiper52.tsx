@@ -37,7 +37,7 @@ const HoverExpand_001 = ({ images, className }: HoverExpandProps) => {
           return (
             <motion.div
               key={`${image.src}-${index}`}
-              className="relative min-w-0 cursor-pointer overflow-hidden rounded-xl sm:rounded-2xl lg:rounded-3xl"
+              className="relative min-w-0 cursor-pointer overflow-hidden"
               initial={false}
               animate={{
                 flexGrow: isActive ? 5 : 1,

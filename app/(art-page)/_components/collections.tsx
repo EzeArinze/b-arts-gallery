@@ -52,6 +52,7 @@ export default function CollectionSection({
               src={firstItem.image.url ? urlFor(firstItem.image.url).url() : ""}
               alt={firstItem.image.alt || "Featured collection"}
               fill
+              loading="eager"
               sizes="(min-width: 768px) 40vw, 100vw"
               className="object-cover brightness-95 contrast-110 transition-[transform,filter] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.02] group-hover:brightness-100"
             />
@@ -124,7 +125,7 @@ export default function CollectionSection({
                     className={buttonVariants({
                       variant: "ghost",
                       className:
-                        "rounded-full border border-primary/30 px-5 text-xs font-semibold tracking-widest text-primary transition-[transform,background-color,border-color] duration-150 ease-out hover:border-primary hover:bg-primary/5 active:scale-[0.97] md:text-sm",
+                        "rounded-none border border-primary/15 px-2.5 text-xs font-semibold tracking-widest text-primary transition-[transform,background-color,border-color] duration-150 ease-out hover:border-primary hover:bg-primary/5 active:scale-[0.97] md:text-sm",
                     })}
                   >
                     BUY
@@ -140,7 +141,7 @@ export default function CollectionSection({
             <Link
               href="/art"
               aria-label="View gallery"
-              className="flex size-12 items-center justify-center rounded-xl border border-border text-foreground transition-[transform,border-color] duration-150 ease-out hover:border-primary active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
+              className="flex size-12 items-center justify-center border border-border text-foreground transition-[transform,border-color] duration-150 ease-out hover:border-primary active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
             >
               <ArrowUpRight className="size-5" />
             </Link>
