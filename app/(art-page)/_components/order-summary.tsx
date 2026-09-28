@@ -17,7 +17,7 @@ interface OrderSummaryProps {
 export default function OrderSummary({
   items,
   shipping = null,
-  currency = "USD",
+  currency = "NGN",
 }: OrderSummaryProps) {
   const format = (n: number) =>
     new Intl.NumberFormat("en", { style: "currency", currency }).format(n);

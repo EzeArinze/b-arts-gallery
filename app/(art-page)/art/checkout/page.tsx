@@ -4,8 +4,8 @@ import Link from "next/link";
 import CheckOutForm from "../../_components/check-out-form";
 import OrderSummary, { type SummaryItem } from "../../_components/order-summary";
 
-const STEPS = ["Cart", "Details", "Payment", "Confirmation"];
-const CURRENT_STEP = 1;
+const STEPS = ["Details", "Payment"];
+const CURRENT_STEP = 0;
 
 // TODO: replace with the real cart (Sanity artworks / cart store)
 const placeholderItems: SummaryItem[] = [
@@ -34,10 +34,10 @@ async function CheckOutPage() {
     <main className="min-h-screen w-full px-6 pb-16 pt-28 md:px-16 md:pt-32">
       <div className="mx-auto w-full max-w-6xl">
         <Link
-          href="/cart"
+          href="/art"
           className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground transition-colors duration-200 hover:text-primary"
         >
-          &larr; Back to cart
+          &larr; Back to collection
         </Link>
 
         <ol

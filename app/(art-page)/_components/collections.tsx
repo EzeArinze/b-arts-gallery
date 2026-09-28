@@ -2,12 +2,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
-import { HOME_QUERYResult } from "@/sanity.types";
 import { urlFor } from "@/sanity/lib/image";
 import { formatCurrency } from "@/utils/format-currency";
 import { PortableText } from "next-sanity";
+import { CollectionType } from "@/utils/types";
 
-type Collection = HOME_QUERYResult["HomePageCollections"];
 
 const catalogueNo = (i: number) => `Nº ${String(i + 1).padStart(2, "0")}`;
 const yearOf = (date?: string | null) =>
@@ -16,7 +15,7 @@ const yearOf = (date?: string | null) =>
 export default function CollectionSection({
   homePageCollection,
 }: {
-  homePageCollection: Collection;
+  homePageCollection: CollectionType;
 }) {
   const firstItem = homePageCollection[0];
   if (!firstItem) return null;

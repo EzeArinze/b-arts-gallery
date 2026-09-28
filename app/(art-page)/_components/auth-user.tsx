@@ -9,7 +9,7 @@ function AuthUser() {
   const { user, isSignedIn } = useUser();
 
   return (
-    <div className="">
+    <div className="flex items-center">
       {!user && !isSignedIn ? (
         <Link href={"/sign-in"}>
           <Button
@@ -25,7 +25,7 @@ function AuthUser() {
             elements: {
               userButtonBox: {
                 color: `var(--primary)`,
-                marginTop: "5px",
+                // marginTop: "5px",
               },
             },
           }}
