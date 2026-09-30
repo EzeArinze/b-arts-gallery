@@ -1,8 +1,10 @@
 import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import CheckOutForm from "../../_components/check-out-form";
-import OrderSummary, { type SummaryItem } from "../../_components/order-summary";
+import CheckOutForm from "./_components/check-out-form";
+import OrderSummary, { type SummaryItem } from "./_components/order-summary";
+
+type Params = Promise<{ slug: string }>;
 
 const STEPS = ["Details", "Payment"];
 const CURRENT_STEP = 0;
@@ -12,7 +14,7 @@ const placeholderItems: SummaryItem[] = [
   { id: "1", title: "Artwork title", artist: "Artist name", price: 1200 },
 ];
 
-async function CheckOutPage() {
+async function CheckOutPage({ params }: { params: Params }) {
   const user = await currentUser();
 
   if (!user) {
@@ -27,6 +29,10 @@ async function CheckOutPage() {
     imageUrl: user.imageUrl,
     fullName: user.fullName,
   };
+
+  const { slug } = await params;
+
+  console.log(slug);
 
   return (
     // pt-28+ clears the fixed navigation; no more vertical centring, which
@@ -49,9 +55,7 @@ async function CheckOutPage() {
               key={step}
               aria-current={i === CURRENT_STEP ? "step" : undefined}
               className={
-                i === CURRENT_STEP
-                  ? "text-primary"
-                  : "text-muted-foreground/60"
+                i === CURRENT_STEP ? "text-primary" : "text-muted-foreground/60"
               }
             >
               <span className="mr-2 tabular-nums">0{i + 1}</span>
