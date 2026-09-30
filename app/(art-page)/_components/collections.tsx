@@ -7,7 +7,6 @@ import { formatCurrency } from "@/utils/format-currency";
 import { PortableText } from "next-sanity";
 import { CollectionType } from "@/utils/types";
 
-
 const catalogueNo = (i: number) => `Nº ${String(i + 1).padStart(2, "0")}`;
 const yearOf = (date?: string | null) =>
   date ? new Date(date).getFullYear() : null;
@@ -121,7 +120,7 @@ export default function CollectionSection({
                     {item.price?.amount && formatCurrency(item.price.amount)}
                   </span>
                   <Link
-                    href="/art/checkout"
+                    href={`/art/checkout?slug=${encodeURIComponent(item.slug ?? "")}`}
                     className={buttonVariants({
                       variant: "ghost",
                       className:

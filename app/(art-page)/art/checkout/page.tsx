@@ -1,38 +1,24 @@
-import { currentUser } from "@clerk/nextjs/server";
-import { redirect } from "next/navigation";
 import Link from "next/link";
 import CheckOutForm from "./_components/check-out-form";
-import OrderSummary, { type SummaryItem } from "./_components/order-summary";
+import { getART } from "@/data/get-art";
+import { Suspense } from "react";
+import OrderSummaryLoader from "./_components/order-summary-loader";
+import { OrderSummarySkeleton } from "./_components/order-summary-skeleton";
+import { notFound } from "next/navigation";
+import { requireUser } from "@/data/get-user";
 
-type Params = Promise<{ slug: string }>;
+type SearchParams = Promise<{ slug?: string | string[] }>;
 
 const STEPS = ["Details", "Payment"];
 const CURRENT_STEP = 0;
 
-// TODO: replace with the real cart (Sanity artworks / cart store)
-const placeholderItems: SummaryItem[] = [
-  { id: "1", title: "Artwork title", artist: "Artist name", price: 1200 },
-];
+async function CheckOutPage({ searchParams }: { searchParams: SearchParams }) {
+  const { slug: rawSlug } = await searchParams;
+  const slug = Array.isArray(rawSlug) ? rawSlug[0] : rawSlug;
+  if (!slug) notFound();
 
-async function CheckOutPage({ params }: { params: Params }) {
-  const user = await currentUser();
-
-  if (!user) {
-    redirect("/sign-in");
-  }
-
-  const plainUser = {
-    id: user.id,
-    firstName: user.firstName,
-    lastName: user.lastName,
-    emailAddress: user.emailAddresses[0]?.emailAddress,
-    imageUrl: user.imageUrl,
-    fullName: user.fullName,
-  };
-
-  const { slug } = await params;
-
-  console.log(slug);
+  const plainUser = await requireUser();
+  const artPromise = getART(slug);
 
   return (
     // pt-28+ clears the fixed navigation; no more vertical centring, which
@@ -69,7 +55,9 @@ async function CheckOutPage({ params }: { params: Params }) {
 
           {/* Summary sits above the form on mobile, sticky beside it on lg */}
           <aside className="order-first lg:sticky lg:top-28 lg:order-last">
-            <OrderSummary items={placeholderItems} />
+            <Suspense fallback={<OrderSummarySkeleton />}>
+              <OrderSummaryLoader artPromise={artPromise} />
+            </Suspense>
           </aside>
         </div>
       </div>

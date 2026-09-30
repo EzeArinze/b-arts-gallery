@@ -11,3 +11,5 @@ export async function getART(slug: string) {
 
   return data;
 }
+
+export type ArtType = NonNullable<Awaited<ReturnType<typeof getART>>>;
