@@ -10,7 +10,7 @@ export default function RootLayout({
   return (
     <div className={"flex min-h-screen flex-col"}>
       <Navigation />
-      {children}
+      <section>{children}</section>
       <Footer />
       <SanityLive />
     </div>

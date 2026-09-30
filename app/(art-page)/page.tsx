@@ -15,7 +15,6 @@ export default async function Home() {
       <NewDrops newPostImage={newPostImages} />
       <CollectionSection homePageCollection={HomePageCollections} />
       <AboutArtist />
-      {/*<Footer />*/}
     </div>
   );
 }

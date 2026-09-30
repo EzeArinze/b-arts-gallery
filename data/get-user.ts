@@ -6,7 +6,6 @@ export const requireUser = cache(async () => {
   const { userId, redirectToSignIn } = await auth();
 
   if (!userId) {
-    // Sends them to sign-in and back to the current URL, query string included
     redirectToSignIn();
     throw new Error("Unreachable: redirectToSignIn should have redirected");
   }

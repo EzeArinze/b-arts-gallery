@@ -1,4 +1,4 @@
-"use server";
+import "server-only";
 
 // import { backendClient } from "@/sanity/lib/backend-cLient";
 import { sanityFetch } from "@/sanity/lib/live";

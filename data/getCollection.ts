@@ -1,4 +1,4 @@
-"use server";
+import "server-only";
 
 import { sanityFetch } from "@/sanity/lib/live";
 import { COLLECTIONS } from "@/sanity/lib/queries";

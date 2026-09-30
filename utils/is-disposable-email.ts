@@ -1,4 +1,4 @@
-"use server";
+import "server-only";
 
 export async function isDisposableEmail(email: string) {
   const res = await fetch(

@@ -10,7 +10,7 @@ export type SummaryItem = {
 
 interface OrderSummaryProps {
   items: SummaryItem[];
-  shipping?: number | null; // null = "calculated at next step"
+  shipping?: number | null;
   currency?: string;
 }
 
