@@ -37,7 +37,7 @@ export async function handleCheckout({
   }
 
   const { art } = result;
-  console.log(parsedValue.data, art);
+  console.log(parsedValue.data, art.price.amount);
 
   // TODO: main logic goes here —
   // - create the order record (parsedValue.data + art.price.amount)

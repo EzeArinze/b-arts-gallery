@@ -29,7 +29,7 @@ import {
 } from "@/components/ui/select";
 import { states } from "@/utils/constant";
 import { Checkbox } from "@/components/ui/checkbox";
-import { handleCheckout } from "../actions";
+import { handleCheckout } from "@/data/actions/handle-checkout";
 import { tryCatch } from "@/utils/try-catch";
 
 interface iAppProps {
