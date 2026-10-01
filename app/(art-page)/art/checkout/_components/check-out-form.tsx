@@ -29,6 +29,8 @@ import {
 } from "@/components/ui/select";
 import { states } from "@/utils/constant";
 import { Checkbox } from "@/components/ui/checkbox";
+import { handleCheckout } from "../actions";
+import { tryCatch } from "@/utils/try-catch";
 
 interface iAppProps {
   user: {
@@ -39,12 +41,11 @@ interface iAppProps {
     imageUrl: string;
     fullName: string | null;
   };
+  slug: string;
 }
-
 
 const labelClass =
   "text-[11px] font-medium uppercase tracking-[0.2em] text-muted-foreground";
-
 
 const inputClass =
   "h-11 rounded-none border-0 border-b border-muted/40 bg-transparent px-0 shadow-none transition-[border-color] duration-200 focus-visible:border-primary focus-visible:ring-0 aria-invalid:border-destructive px-1";
@@ -69,8 +70,10 @@ function CheckOutForm(props: iAppProps) {
   const { isSubmitting } = form.formState;
 
   async function handleSubmit(value: orderFormType) {
-    // TODO: create the order / hand off to the payment step
-    console.log(value);
+    const { data, error } = await tryCatch(
+      handleCheckout({ value, slug: props.slug }),
+    );
+    console.log(data, error);
   }
 
   return (

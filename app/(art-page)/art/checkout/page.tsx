@@ -1,11 +1,11 @@
 import Link from "next/link";
 import CheckOutForm from "./_components/check-out-form";
-import { getART } from "@/data/get-art";
 import { Suspense } from "react";
 import OrderSummaryLoader from "./_components/order-summary-loader";
 import { OrderSummarySkeleton } from "./_components/order-summary-skeleton";
 import { notFound } from "next/navigation";
 import { requireUser } from "@/data/get-user";
+import { getCheckoutArt } from "@/data/checkout/get-checkout-art";
 
 type SearchParams = Promise<{ slug?: string | string[] }>;
 
@@ -18,11 +18,10 @@ async function CheckOutPage({ searchParams }: { searchParams: SearchParams }) {
   if (!slug) notFound();
 
   const plainUser = await requireUser();
-  const artPromise = getART(slug);
+
+  const artPromise = getCheckoutArt(slug);
 
   return (
-    // pt-28+ clears the fixed navigation; no more vertical centring, which
-    // clipped the form on short phones.
     <main className="min-h-screen w-full px-6 pb-16 pt-28 md:px-16 md:pt-32">
       <div className="mx-auto w-full max-w-6xl">
         <Link
@@ -51,13 +50,14 @@ async function CheckOutPage({ searchParams }: { searchParams: SearchParams }) {
         </ol>
 
         <div className="mt-10 grid items-start gap-10 lg:grid-cols-[minmax(0,1fr)_380px] lg:gap-16">
-          <CheckOutForm user={plainUser} />
+          <CheckOutForm user={plainUser} slug={slug} />
 
           {/* Summary sits above the form on mobile, sticky beside it on lg */}
           <aside className="order-first lg:sticky lg:top-28 lg:order-last">
             <Suspense fallback={<OrderSummarySkeleton />}>
               <OrderSummaryLoader artPromise={artPromise} />
             </Suspense>
+            {/*<OrderSummary items={items} currency={art.price.currency ?? "NGN"} />;*/}
           </aside>
         </div>
       </div>

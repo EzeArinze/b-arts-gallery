@@ -1,27 +1,12 @@
-import { notFound } from "next/navigation";
-import OrderSummary, { type SummaryItem } from "./order-summary";
-import { ArtType } from "@/data/get-art";
+import OrderSummary from "./order-summary";
+import { getCheckoutArtReturnType } from "@/data/checkout/get-checkout-art";
 
 export default async function OrderSummaryLoader({
   artPromise,
 }: {
-  artPromise: Promise<ArtType | null>;
+  artPromise: Promise<getCheckoutArtReturnType>;
 }) {
-  const art = await artPromise;
-
-  if (!art || art.available === false || art.price?.amount == null) {
-    notFound();
-  }
-
-  const items: SummaryItem[] = [
-    {
-      id: art.name ?? "artwork",
-      title: art.name ?? "Untitled",
-      artist: art.artist ?? undefined,
-      price: art.price.amount,
-      imageUrl: art.image.url ?? undefined,
-    },
-  ];
+  const { art, items } = await artPromise;
 
   return <OrderSummary items={items} currency={art.price.currency ?? "NGN"} />;
 }
