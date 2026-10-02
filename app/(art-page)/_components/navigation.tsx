@@ -20,8 +20,6 @@ export default function Navigation() {
     const sentinel = sentinelRef.current;
     if (!sentinel) return;
 
-    // Fires once the 1px sentinel scrolls out of view — cheaper than a
-    // scroll listener since it runs off the main thread.
     const observer = new IntersectionObserver(
       ([entry]) => setScrolled(!entry.isIntersecting),
       { threshold: 1 },

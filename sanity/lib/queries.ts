@@ -77,3 +77,22 @@ export const PROCESSED_ORDER =
     _id,
     }
 `);
+
+export const ORDER_BY_REFERENCE = defineQuery(`
+*[_type == "order" && payment.reference == $reference][0]{
+  customer{ name, email },
+  order{
+    "items": items[]->{
+      name,
+      artist,
+      "slug": slug.current,
+      "image": { "url": artImage.asset->url, "alt": artImage.alt }
+    },
+    total,
+    currency,
+    status,
+    createdAt
+  },
+  payment{ reference, status }
+}
+`);

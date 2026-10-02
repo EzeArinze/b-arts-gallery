@@ -55,6 +55,7 @@ const HoverExpand_001 = ({ images, className }: HoverExpandProps) => {
                 src={image.src}
                 alt={image.alt}
                 fill
+                loading="eager"
                 sizes="(min-width: 1024px) 1200px, 100vw"
                 className="object-cover"
               />

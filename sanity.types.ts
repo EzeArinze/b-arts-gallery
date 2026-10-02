@@ -12,7 +12,16 @@
  * ---------------------------------------------------------------------------------
  */
 
+export declare const internalGroqTypeReferenceTo: unique symbol;
+
 // Source: schema.json
+export type CollectionReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "collection";
+};
+
 export type Order = {
   _id: string;
   _type: "order";
@@ -29,13 +38,11 @@ export type Order = {
     address?: string;
   };
   order?: {
-    items?: Array<{
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      _key: string;
-      [internalGroqTypeReferenceTo]?: "collection";
-    }>;
+    items?: Array<
+      {
+        _key: string;
+      } & CollectionReference
+    >;
     total?: number;
     currency?: "NGN";
     status?: "pending" | "paid" | "shipped" | "delivered";
@@ -45,6 +52,13 @@ export type Order = {
     reference?: string;
     status?: "pending" | "success" | "failed";
   };
+};
+
+export type SanityImageAssetReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
 };
 
 export type Collection = {
@@ -57,12 +71,7 @@ export type Collection = {
   slug?: Slug;
   artist?: string;
   artImage?: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
+    asset?: SanityImageAssetReference;
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
@@ -159,6 +168,7 @@ export type SanityImageMetadata = {
   palette?: SanityImagePalette;
   lqip?: string;
   blurHash?: string;
+  thumbHash?: string;
   hasAlpha?: boolean;
   isOpaque?: boolean;
 };
@@ -222,12 +232,28 @@ export type Geopoint = {
   alt?: number;
 };
 
-export type AllSanitySchemaTypes = Order | Collection | BlockContent | SanityImageCrop | SanityImageHotspot | Slug | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
-export declare const internalGroqTypeReferenceTo: unique symbol;
-// Source: ./sanity/lib/queries.ts
+export type AllSanitySchemaTypes =
+  | CollectionReference
+  | Order
+  | SanityImageAssetReference
+  | Collection
+  | BlockContent
+  | SanityImageCrop
+  | SanityImageHotspot
+  | Slug
+  | SanityImagePaletteSwatch
+  | SanityImagePalette
+  | SanityImageDimensions
+  | SanityImageMetadata
+  | SanityFileAsset
+  | SanityAssetSourceData
+  | SanityImageAsset
+  | Geopoint;
+
+// Source: sanity/lib/queries.ts
 // Variable: HOME_QUERY
 // Query: {  "newPostImages": *[_type == "collection"]    | order(_createdAt desc)[0...4]{      _id,      "image": {        "url": artImage.asset->url,        "alt": artImage.alt      }    },  "HomePageCollections": *[_type == "collection"]| order(_createdAt desc)[0...4]{    name,    "slug": slug.current,    price{      amount,      currency    },    creationDate,    about,    "image": {      "url": artImage.asset->url,      "alt": artImage.alt    }  }}
-export type HOME_QUERYResult = {
+export type HOME_QUERY_RESULT = {
   newPostImages: Array<{
     _id: string;
     image: {
@@ -250,9 +276,11 @@ export type HOME_QUERYResult = {
     };
   }>;
 };
+
+// Source: sanity/lib/queries.ts
 // Variable: COLLECTIONS
 // Query: {  "collections": *[_type == "collection"]    | order(_createdAt desc)[$start...$end]{      _id,      name,      artist,      "slug": slug.current,      price{        amount,        currency      },      creationDate,      about,      "image": {        "url": artImage.asset->url,        "alt": artImage.alt      }    },  "total": count(*[_type == "collection"])}
-export type COLLECTIONSResult = {
+export type COLLECTIONS_RESULT = {
   collections: Array<{
     _id: string;
     name: string | null;
@@ -271,9 +299,11 @@ export type COLLECTIONSResult = {
   }>;
   total: number;
 };
+
+// Source: sanity/lib/queries.ts
 // Variable: ART_DETAILS
 // Query: *[_type == "collection" && slug.current == $slug][0]{  _id,  _rev,  name,  about,  dimensions,  available,  reservedUntil,  artist,  price{    amount,    currency  },  "image": {    "url": artImage.asset->url,    "alt": artImage.alt  },  creationDate,  }
-export type ART_DETAILSResult = {
+export type ART_DETAILS_RESULT = {
   _id: string;
   _rev: string;
   name: string | null;
@@ -296,19 +326,51 @@ export type ART_DETAILSResult = {
   };
   creationDate: string | null;
 } | null;
+
+// Source: sanity/lib/queries.ts
 // Variable: PROCESSED_ORDER
 // Query: *[_type == "order" && payment.reference == $reference][0]{    _id,    }
-export type PROCESSED_ORDERResult = {
+export type PROCESSED_ORDER_RESULT = {
   _id: string;
+} | null;
+
+// Source: sanity/lib/queries.ts
+// Variable: ORDER_BY_REFERENCE
+// Query: *[_type == "order" && payment.reference == $reference][0]{  customer{ name, email },  order{    "items": items[]->{      name,      artist,      "slug": slug.current,      "image": { "url": artImage.asset->url, "alt": artImage.alt }    },    total,    currency,    status,    createdAt  },  payment{ reference, status }}
+export type ORDER_BY_REFERENCE_RESULT = {
+  customer: {
+    name: string | null;
+    email: string | null;
+  } | null;
+  order: {
+    items: Array<{
+      name: string | null;
+      artist: string | null;
+      slug: string | null;
+      image: {
+        url: string | null;
+        alt: string | null;
+      };
+    }> | null;
+    total: number | null;
+    currency: "NGN" | null;
+    status: "delivered" | "paid" | "pending" | "shipped" | null;
+    createdAt: string | null;
+  } | null;
+  payment: {
+    reference: string | null;
+    status: "failed" | "pending" | "success" | null;
+  } | null;
 } | null;
 
 // Query TypeMap
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
-    "\n{\n  \"newPostImages\": *[_type == \"collection\"]\n    | order(_createdAt desc)[0...4]{\n      _id,\n      \"image\": {\n        \"url\": artImage.asset->url,\n        \"alt\": artImage.alt\n      }\n    },\n\n  \"HomePageCollections\": *[_type == \"collection\"]| order(_createdAt desc)[0...4]{\n    name,\n    \"slug\": slug.current,\n    price{\n      amount,\n      currency\n    },\n    creationDate,\n    about,\n    \"image\": {\n      \"url\": artImage.asset->url,\n      \"alt\": artImage.alt\n    }\n  }\n}\n": HOME_QUERYResult;
-    "\n{\n  \"collections\": *[_type == \"collection\"]\n    | order(_createdAt desc)[$start...$end]{\n      _id,\n      name,\n      artist,\n      \"slug\": slug.current,\n      price{\n        amount,\n        currency\n      },\n      creationDate,\n      about,\n      \"image\": {\n        \"url\": artImage.asset->url,\n        \"alt\": artImage.alt\n      }\n    },\n  \"total\": count(*[_type == \"collection\"])\n}\n": COLLECTIONSResult;
-    "*[_type == \"collection\" && slug.current == $slug][0]{\n  _id,\n  _rev,\n  name,\n  about,\n  dimensions,\n  available,\n  reservedUntil,\n  artist,\n  price{\n    amount,\n    currency\n  },\n  \"image\": {\n    \"url\": artImage.asset->url,\n    \"alt\": artImage.alt\n  },\n  creationDate,\n  }": ART_DETAILSResult;
-    "*[_type == \"order\" && payment.reference == $reference][0]{\n    _id,\n    }\n": PROCESSED_ORDERResult;
+    '\n{\n  "newPostImages": *[_type == "collection"]\n    | order(_createdAt desc)[0...4]{\n      _id,\n      "image": {\n        "url": artImage.asset->url,\n        "alt": artImage.alt\n      }\n    },\n\n  "HomePageCollections": *[_type == "collection"]| order(_createdAt desc)[0...4]{\n    name,\n    "slug": slug.current,\n    price{\n      amount,\n      currency\n    },\n    creationDate,\n    about,\n    "image": {\n      "url": artImage.asset->url,\n      "alt": artImage.alt\n    }\n  }\n}\n': HOME_QUERY_RESULT;
+    '\n{\n  "collections": *[_type == "collection"]\n    | order(_createdAt desc)[$start...$end]{\n      _id,\n      name,\n      artist,\n      "slug": slug.current,\n      price{\n        amount,\n        currency\n      },\n      creationDate,\n      about,\n      "image": {\n        "url": artImage.asset->url,\n        "alt": artImage.alt\n      }\n    },\n  "total": count(*[_type == "collection"])\n}\n': COLLECTIONS_RESULT;
+    '*[_type == "collection" && slug.current == $slug][0]{\n  _id,\n  _rev,\n  name,\n  about,\n  dimensions,\n  available,\n  reservedUntil,\n  artist,\n  price{\n    amount,\n    currency\n  },\n  "image": {\n    "url": artImage.asset->url,\n    "alt": artImage.alt\n  },\n  creationDate,\n  }': ART_DETAILS_RESULT;
+    '*[_type == "order" && payment.reference == $reference][0]{\n    _id,\n    }\n': PROCESSED_ORDER_RESULT;
+    '\n*[_type == "order" && payment.reference == $reference][0]{\n  customer{ name, email },\n  order{\n    "items": items[]->{\n      name,\n      artist,\n      "slug": slug.current,\n      "image": { "url": artImage.asset->url, "alt": artImage.alt }\n    },\n    total,\n    currency,\n    status,\n    createdAt\n  },\n  payment{ reference, status }\n}\n': ORDER_BY_REFERENCE_RESULT;
   }
 }

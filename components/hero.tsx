@@ -31,7 +31,6 @@ const WORKS = [
   },
 ];
 
-// Emil's curves: strong ease-out for entrances/UI, ease-in-out for on-screen movement
 const EASE_OUT = "cubic-bezier(0.23,1,0.32,1)";
 const EASE_IN_OUT = "cubic-bezier(0.77,0,0.175,1)";
 
@@ -223,7 +222,7 @@ export default function GothifHero() {
           <div className="h-px flex-1 bg-primary/60" />
 
           <span className="rounded-full border border-primary/60 px-4 py-1 text-[10px] transition-colors duration-200 hover:border-primary hover:bg-primary/10">
-            2025 EDITION
+            2026 EDITION
           </span>
         </div>
       </div>
