@@ -8,7 +8,7 @@ type ArtWithPrice = NonNullable<Awaited<ReturnType<typeof getART>>> & {
 
 export type CheckoutArtResult =
   | { ok: true; art: ArtWithPrice }
-  | { ok: false; reason: "not_found" | "unavailable" };
+  | { ok: false; reason: "not_found" | "unavailable" | "reserved" };
 
 export async function getArtForCheckout(
   slug: string,
@@ -19,7 +19,19 @@ export async function getArtForCheckout(
     return { ok: false, reason: "not_found" };
   }
 
-  if (art.available === false || art.price?.amount == null) {
+  if (art.available === false) {
+    return { ok: false, reason: "unavailable" };
+  }
+
+  const activelyReserved =
+    typeof art.reservedUntil === "string" &&
+    new Date(art.reservedUntil).getTime() > Date.now();
+
+  if (activelyReserved) {
+    return { ok: false, reason: "reserved" };
+  }
+
+  if (art.price?.amount == null) {
     return { ok: false, reason: "unavailable" };
   }
 

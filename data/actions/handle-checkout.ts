@@ -1,11 +1,16 @@
 "use server";
 
+import { redirect } from "next/navigation";
 import { orderFormSchema, orderFormType } from "@/schema/check-out-order";
 import { getArtForCheckout } from "@/data/checkout/get-art-for-checkout";
+import { reserveArt, releaseReservation } from "@/data/actions/reserve-art";
+import { initializePayment } from "@/data/actions/initialize-payment";
 
-type HandleCheckoutResult =
-  | { status: "error"; message: string; fieldErrors?: string }
-  | { status: "success"; message: string };
+type HandleCheckoutResult = {
+  status: "error";
+  message: string;
+  fieldErrors?: string;
+};
 
 export async function handleCheckout({
   values,
@@ -27,23 +32,53 @@ export async function handleCheckout({
   const result = await getArtForCheckout(slug);
 
   if (!result.ok) {
-    return {
-      status: "error",
-      message:
-        result.reason === "not_found"
-          ? "We couldn't find that artwork."
-          : "Sorry — this piece is no longer available.",
-    };
+    const message =
+      result.reason === "not_found"
+        ? "We couldn't find that artwork."
+        : result.reason === "reserved"
+          ? "Someone else is checking out with this piece right now — try again in a few minutes."
+          : "Sorry — this piece is no longer available.";
+
+    return { status: "error", message };
   }
 
   const { art } = result;
 
-  // TODO: main logic goes here —
-  // - create the order record (parsedValue.data + art.price.amount)
-  // - kick off the payment step (redirect, client secret, etc.)
+  // Claim it before talking to Paystack at all — this is what closes the
+  // window a second buyer could otherwise slip through.
+  const reservation = await reserveArt(art._id);
 
-  return {
-    status: "success",
-    message: "checkout initialized",
-  };
+  if (!reservation.ok) {
+    return {
+      status: "error",
+      message: "This piece was just reserved by another buyer.",
+    };
+  }
+
+  const { fullName, email, phone, state, address } = parsedValue.data;
+
+  const payment = await initializePayment({
+    email,
+    phone,
+    amount: art.price.amount,
+    metadata: {
+      customer: { name: fullName, email, phone },
+      shippingAddress: { state, address },
+      items: [
+        {
+          artId: art._id,
+          price: art.price.amount,
+          currency: art.price.currency ?? "NGN",
+        },
+      ],
+    },
+  });
+
+  if (!payment.ok) {
+    // Don't hold the reservation for the full window over a dead API call.
+    await releaseReservation(art._id);
+    return { status: "error", message: payment.error };
+  }
+
+  redirect(payment.authorizationUrl);
 }

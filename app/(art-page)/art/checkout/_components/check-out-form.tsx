@@ -31,6 +31,7 @@ import { states } from "@/utils/constant";
 import { Checkbox } from "@/components/ui/checkbox";
 import { handleCheckout } from "@/data/actions/handle-checkout";
 import { tryCatch } from "@/utils/try-catch";
+import { toast } from "sonner";
 
 interface iAppProps {
   user: {
@@ -67,13 +68,20 @@ function CheckOutForm(props: iAppProps) {
     },
   });
 
-  const { isSubmitting } = form.formState;
+  const { isSubmitting, isSubmitSuccessful } = form.formState;
 
   async function handleSubmit(values: orderFormType) {
     const { data, error } = await tryCatch(
       handleCheckout({ values, slug: props.slug }),
     );
-    console.log(data, error);
+    if (data?.status === "error" || error) {
+      toast.error(data?.message || error?.message);
+    }
+
+    if (data?.status !== "error" && isSubmitSuccessful) {
+      toast.success(data?.message);
+      form.reset();
+    }
   }
 
   return (

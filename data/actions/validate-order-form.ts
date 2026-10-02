@@ -1,14 +1,16 @@
+import "server-only";
+
 import { orderFormSchema, orderFormType } from "@/schema/check-out-order";
 import { isDisposableEmail } from "@/utils/is-disposable-email";
-import z from "zod";
 
 export async function validateOrderForm(input: orderFormType) {
   const parsed = orderFormSchema.safeParse(input);
 
   if (!parsed.success) {
     return {
-      success: false,
-      errors: z.flattenError(parsed.error).fieldErrors,
+      status: "error",
+      message: "Please provide valid data",
+      fieldErrors: parsed.error.message,
     };
   }
 
@@ -16,15 +18,14 @@ export async function validateOrderForm(input: orderFormType) {
 
   if (await isDisposableEmail(email)) {
     return {
-      success: false,
-      errors: {
-        email: ["Temporary email addresses are not supported"],
-      },
+      status: "error",
+      message: "Temporary email addresses are not supported",
     };
   }
 
   return {
-    success: true,
+    status: "success",
+    message: "validation done",
     data: parsed.data,
   };
 }

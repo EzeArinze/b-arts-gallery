@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
 import {
   isOrderAlreadyProcessed,
-  // saveOrderTransaction,
+  saveOrderTransaction,
 } from "@/data/actions/mark-processed";
 
 const secret = process.env.PAYSTACK_SECRET!;
@@ -18,57 +18,53 @@ export async function POST(req: NextRequest) {
 
   try {
     const event = JSON.parse(body);
-
     const { event: eventType, data } = event;
 
     switch (eventType) {
+      case "charge.success": {
+        const { reference } = data;
+
+        if (await isOrderAlreadyProcessed(reference)) {
+          return NextResponse.json({
+            status: "success",
+            message: "Already processed",
+          });
+        }
+
+        const result = await saveOrderTransaction(data);
+
+        if (!result.ok) {
+
+          return NextResponse.json(
+            { status: "error", message: "Artwork no longer available" },
+            { status: 409 },
+          );
+        }
+
+        return NextResponse.json({
+          status: "success",
+          message: "Payment completed",
+        });
+      }
+
       case "transfer.failed": {
         const { transfer_code, reason } = data;
-        // do something
-        // send email notification
+        // TODO: send email notification
         console.log(transfer_code, reason);
         break;
       }
+
       case "transfer.reversed": {
         const { transfer_code } = data;
-        // do something
-        // send email notification
+        // TODO: send email notification
         console.log(transfer_code);
         break;
       }
-      default:
-        return NextResponse.json({
-          status: "success",
-          message: "Event ignored",
-        });
     }
 
-    if (eventType === "charge.success" || eventType === "transfer.success") {
-      const {
-        reference,
-        // amount,
-        // currency,
-        // status,
-        // customer,
-        transfer_code,
-      } = data;
-
-      if (await isOrderAlreadyProcessed(reference || transfer_code)) return;
-
-      // save to db and update art to be sold
-      // await saveOrderTransaction({ orderDoc: {}, artworkIds: [] });
-
-      return NextResponse.json(
-        {
-          message: "Payment Completed",
-        },
-        { status: 200 },
-      );
-    }
-
-    return NextResponse.json({ ok: true }, { status: 200 });
+    return NextResponse.json({ status: "success", message: "Event handled" });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return NextResponse.json({ ok: false }, { status: 200 });
   }
 }

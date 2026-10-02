@@ -126,6 +126,14 @@ export const collectionSchema = defineType({
       type: "blockContent",
       validation: (rule) => rule.required().error("Tell us about your art"),
     }),
+    defineField({
+      name: "reservedUntil",
+      title: "Reserved Until",
+      type: "datetime",
+      description:
+        "Set automatically when someone starts checkout. Not for manual editing.",
+      readOnly: true,
+    }),
   ],
   preview: {
     select: { name: "name", media: "artImage", date: "creationDate" },

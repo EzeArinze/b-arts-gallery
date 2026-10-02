@@ -28,28 +28,11 @@ export const HOME_QUERY = defineQuery(`
 }
 `);
 
-export const ART_DETAILS =
-  defineQuery(`*[_type == "collection" && slug.current == $slug][0]{
-  name,
-  about,
-  dimensions,
-  available,
-  artist,
-  price{
-    amount,
-    currency
-  },
-  "image": {
-    "url": artImage.asset->url,
-    "alt": artImage.alt
-  },
-  creationDate,
-  }`);
-
 export const COLLECTIONS = defineQuery(`
 {
   "collections": *[_type == "collection"]
     | order(_createdAt desc)[$start...$end]{
+      _id,
       name,
       artist,
       "slug": slug.current,
@@ -67,6 +50,27 @@ export const COLLECTIONS = defineQuery(`
   "total": count(*[_type == "collection"])
 }
 `);
+
+export const ART_DETAILS =
+  defineQuery(`*[_type == "collection" && slug.current == $slug][0]{
+  _id,
+  _rev,
+  name,
+  about,
+  dimensions,
+  available,
+  reservedUntil,
+  artist,
+  price{
+    amount,
+    currency
+  },
+  "image": {
+    "url": artImage.asset->url,
+    "alt": artImage.alt
+  },
+  creationDate,
+  }`);
 
 export const PROCESSED_ORDER =
   defineQuery(`*[_type == "order" && payment.reference == $reference][0]{

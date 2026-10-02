@@ -1,35 +1,35 @@
-import { env } from "@/lib/env/server";
-import axios from "axios";
+import "server-only";
 
-type initializePaymentArtsOrderData = {
-  buyer_details: {
-    phone_number: string;
-    email: string;
-    terms_agreed: boolean;
-    address: string;
-    state: string;
-  };
-  art_detail: {
-    name: string;
-    price: number;
-  };
+import axios from "axios";
+import { env } from "@/lib/env/server";
+import { OrderMetadata } from "@/utils/types";
+
+type InitializePaymentInput = {
+  email: string;
+  phone: string;
+  amount: number;
+  metadata: OrderMetadata;
 };
 
+type InitializePaymentResult =
+  | { ok: true; authorizationUrl: string; reference: string }
+  | { ok: false; error: string };
+
 export async function initializePayment({
-  buyer_details,
-  art_detail,
-}: initializePaymentArtsOrderData) {
-  const { email, phone_number } = buyer_details;
-  const { price } = art_detail;
+  email,
+  phone,
+  amount,
+  metadata,
+}: InitializePaymentInput): Promise<InitializePaymentResult> {
   try {
     const response = await axios.post(
-      `${env.PAYSTACK_URL}/transaction/initialize`,
+      `${env.BASE_PAYSTACK_URL}/transaction/initialize`,
       {
         email,
-        phone: phone_number,
-        amount: Math.round(price * 100), // Convert to kobo
-        // metadata,
-        callback_url: `${env.BASE_URL}/commerce/success`,
+        phone,
+        amount: Math.round(amount * 100), // naira -> kobo
+        metadata,
+        callback_url: `${env.BASE_URL}/checkout/success`,
       },
       {
         headers: {
@@ -39,20 +39,16 @@ export async function initializePayment({
       },
     );
 
-    if (!response.data) {
-      throw new Error("Failed to initialize payment");
+    const authorizationUrl = response.data?.data?.authorization_url;
+    const reference = response.data?.data?.reference;
+
+    if (!authorizationUrl || !reference) {
+      return { ok: false, error: "Authorization URL not received" };
     }
 
-    const data = response.data;
-
-    if (data.data && data.data.authorization_url) {
-      window.location.href = data.data.authorization_url;
-    } else {
-      throw new Error("Authorization URL not received");
-    }
+    return { ok: true, authorizationUrl, reference };
   } catch (error) {
-    if (error instanceof Error) {
-      console.error("initializing payment:", error.message);
-    }
+    console.error("initializing payment:", error);
+    return { ok: false, error: "Failed to initialize payment" };
   }
 }

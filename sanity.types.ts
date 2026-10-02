@@ -43,7 +43,7 @@ export type Order = {
   };
   payment?: {
     reference?: string;
-    status?: "success" | "failed";
+    status?: "pending" | "success" | "failed";
   };
 };
 
@@ -71,8 +71,9 @@ export type Collection = {
   };
   price?: {
     amount?: number;
-    currency?: "NGN" | "USD" | "EUR";
+    currency?: "NGN";
   };
+  isSold?: boolean;
   dimensions?: {
     width?: number;
     height?: number;
@@ -81,6 +82,7 @@ export type Collection = {
   available?: boolean;
   creationDate?: string;
   about?: BlockContent;
+  reservedUntil?: string;
 };
 
 export type BlockContent = Array<{
@@ -238,7 +240,7 @@ export type HOME_QUERYResult = {
     slug: string | null;
     price: {
       amount: number | null;
-      currency: "EUR" | "NGN" | "USD" | null;
+      currency: "NGN" | null;
     } | null;
     creationDate: string | null;
     about: BlockContent | null;
@@ -248,38 +250,17 @@ export type HOME_QUERYResult = {
     };
   }>;
 };
-// Variable: ART_DETAILS
-// Query: *[_type == "collection" && slug.current == $slug][0]{  name,  about,  dimensions,  available,  artist,  price{    amount,    currency  },  "image": {    "url": artImage.asset->url,    "alt": artImage.alt  },  creationDate,  }
-export type ART_DETAILSResult = {
-  name: string | null;
-  about: BlockContent | null;
-  dimensions: {
-    width?: number;
-    height?: number;
-    unit?: "cm" | "in";
-  } | null;
-  available: boolean | null;
-  artist: string | null;
-  price: {
-    amount: number | null;
-    currency: "EUR" | "NGN" | "USD" | null;
-  } | null;
-  image: {
-    url: string | null;
-    alt: string | null;
-  };
-  creationDate: string | null;
-} | null;
 // Variable: COLLECTIONS
-// Query: {  "collections": *[_type == "collection"]    | order(_createdAt desc)[$start...$end]{      name,      artist,      "slug": slug.current,      price{        amount,        currency      },      creationDate,      about,      "image": {        "url": artImage.asset->url,        "alt": artImage.alt      }    },  "total": count(*[_type == "collection"])}
+// Query: {  "collections": *[_type == "collection"]    | order(_createdAt desc)[$start...$end]{      _id,      name,      artist,      "slug": slug.current,      price{        amount,        currency      },      creationDate,      about,      "image": {        "url": artImage.asset->url,        "alt": artImage.alt      }    },  "total": count(*[_type == "collection"])}
 export type COLLECTIONSResult = {
   collections: Array<{
+    _id: string;
     name: string | null;
     artist: string | null;
     slug: string | null;
     price: {
       amount: number | null;
-      currency: "EUR" | "NGN" | "USD" | null;
+      currency: "NGN" | null;
     } | null;
     creationDate: string | null;
     about: BlockContent | null;
@@ -290,13 +271,44 @@ export type COLLECTIONSResult = {
   }>;
   total: number;
 };
+// Variable: ART_DETAILS
+// Query: *[_type == "collection" && slug.current == $slug][0]{  _id,  _rev,  name,  about,  dimensions,  available,  reservedUntil,  artist,  price{    amount,    currency  },  "image": {    "url": artImage.asset->url,    "alt": artImage.alt  },  creationDate,  }
+export type ART_DETAILSResult = {
+  _id: string;
+  _rev: string;
+  name: string | null;
+  about: BlockContent | null;
+  dimensions: {
+    width?: number;
+    height?: number;
+    unit?: "cm" | "in";
+  } | null;
+  available: boolean | null;
+  reservedUntil: string | null;
+  artist: string | null;
+  price: {
+    amount: number | null;
+    currency: "NGN" | null;
+  } | null;
+  image: {
+    url: string | null;
+    alt: string | null;
+  };
+  creationDate: string | null;
+} | null;
+// Variable: PROCESSED_ORDER
+// Query: *[_type == "order" && payment.reference == $reference][0]{    _id,    }
+export type PROCESSED_ORDERResult = {
+  _id: string;
+} | null;
 
 // Query TypeMap
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
     "\n{\n  \"newPostImages\": *[_type == \"collection\"]\n    | order(_createdAt desc)[0...4]{\n      _id,\n      \"image\": {\n        \"url\": artImage.asset->url,\n        \"alt\": artImage.alt\n      }\n    },\n\n  \"HomePageCollections\": *[_type == \"collection\"]| order(_createdAt desc)[0...4]{\n    name,\n    \"slug\": slug.current,\n    price{\n      amount,\n      currency\n    },\n    creationDate,\n    about,\n    \"image\": {\n      \"url\": artImage.asset->url,\n      \"alt\": artImage.alt\n    }\n  }\n}\n": HOME_QUERYResult;
-    "*[_type == \"collection\" && slug.current == $slug][0]{\n  name,\n  about,\n  dimensions,\n  available,\n  artist,\n  price{\n    amount,\n    currency\n  },\n  \"image\": {\n    \"url\": artImage.asset->url,\n    \"alt\": artImage.alt\n  },\n  creationDate,\n  }": ART_DETAILSResult;
-    "\n{\n  \"collections\": *[_type == \"collection\"]\n    | order(_createdAt desc)[$start...$end]{\n      name,\n      artist,\n      \"slug\": slug.current,\n      price{\n        amount,\n        currency\n      },\n      creationDate,\n      about,\n      \"image\": {\n        \"url\": artImage.asset->url,\n        \"alt\": artImage.alt\n      }\n    },\n  \"total\": count(*[_type == \"collection\"])\n}\n": COLLECTIONSResult;
+    "\n{\n  \"collections\": *[_type == \"collection\"]\n    | order(_createdAt desc)[$start...$end]{\n      _id,\n      name,\n      artist,\n      \"slug\": slug.current,\n      price{\n        amount,\n        currency\n      },\n      creationDate,\n      about,\n      \"image\": {\n        \"url\": artImage.asset->url,\n        \"alt\": artImage.alt\n      }\n    },\n  \"total\": count(*[_type == \"collection\"])\n}\n": COLLECTIONSResult;
+    "*[_type == \"collection\" && slug.current == $slug][0]{\n  _id,\n  _rev,\n  name,\n  about,\n  dimensions,\n  available,\n  reservedUntil,\n  artist,\n  price{\n    amount,\n    currency\n  },\n  \"image\": {\n    \"url\": artImage.asset->url,\n    \"alt\": artImage.alt\n  },\n  creationDate,\n  }": ART_DETAILSResult;
+    "*[_type == \"order\" && payment.reference == $reference][0]{\n    _id,\n    }\n": PROCESSED_ORDERResult;
   }
 }

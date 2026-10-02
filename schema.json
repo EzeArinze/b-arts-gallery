@@ -211,6 +211,10 @@
                 "of": [
                   {
                     "type": "string",
+                    "value": "pending"
+                  },
+                  {
+                    "type": "string",
                     "value": "success"
                   },
                   {
@@ -380,20 +384,19 @@
                   {
                     "type": "string",
                     "value": "NGN"
-                  },
-                  {
-                    "type": "string",
-                    "value": "USD"
-                  },
-                  {
-                    "type": "string",
-                    "value": "EUR"
                   }
                 ]
               },
               "optional": true
             }
           }
+        },
+        "optional": true
+      },
+      "isSold": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "boolean"
         },
         "optional": true
       },
@@ -456,6 +459,13 @@
         "value": {
           "type": "inline",
           "name": "blockContent"
+        },
+        "optional": true
+      },
+      "reservedUntil": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
         },
         "optional": true
       }
