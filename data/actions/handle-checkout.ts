@@ -8,13 +8,13 @@ type HandleCheckoutResult =
   | { status: "success"; message: string };
 
 export async function handleCheckout({
-  value,
+  values,
   slug,
 }: {
-  value: orderFormType;
+  values: orderFormType;
   slug: string;
 }): Promise<HandleCheckoutResult> {
-  const parsedValue = orderFormSchema.safeParse(value);
+  const parsedValue = orderFormSchema.safeParse(values);
 
   if (!parsedValue.success) {
     return {
@@ -37,7 +37,6 @@ export async function handleCheckout({
   }
 
   const { art } = result;
-  console.log(parsedValue.data, art.price.amount);
 
   // TODO: main logic goes here —
   // - create the order record (parsedValue.data + art.price.amount)

@@ -69,7 +69,7 @@ export const collectionSchema = defineType({
           name: "currency",
           type: "string",
           options: {
-            list: ["NGN", "USD", "EUR"],
+            list: ["NGN"],
           },
           initialValue: "NGN",
         }),

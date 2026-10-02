@@ -69,9 +69,9 @@ function CheckOutForm(props: iAppProps) {
 
   const { isSubmitting } = form.formState;
 
-  async function handleSubmit(value: orderFormType) {
+  async function handleSubmit(values: orderFormType) {
     const { data, error } = await tryCatch(
-      handleCheckout({ value, slug: props.slug }),
+      handleCheckout({ values, slug: props.slug }),
     );
     console.log(data, error);
   }

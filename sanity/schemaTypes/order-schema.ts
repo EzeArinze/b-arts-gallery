@@ -124,6 +124,7 @@ export const orderSchema = defineType({
           type: "string",
           options: {
             list: [
+              { title: "Pending", value: "pending" },
               { title: "Success", value: "success" },
               { title: "Failed", value: "failed" },
             ],
