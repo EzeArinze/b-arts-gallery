@@ -3,7 +3,7 @@ import crypto from "crypto";
 import {
   isOrderAlreadyProcessed,
   saveOrderTransaction,
-} from "@/data/actions/mark-processed";
+} from "@/actions/mark-processed";
 
 const secret = process.env.PAYSTACK_SECRET!;
 
@@ -34,7 +34,6 @@ export async function POST(req: NextRequest) {
         const result = await saveOrderTransaction(data);
 
         if (!result.ok) {
-
           return NextResponse.json(
             { status: "error", message: "Artwork no longer available" },
             { status: 409 },

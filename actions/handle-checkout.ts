@@ -3,8 +3,8 @@
 // import { redirect } from "next/navigation";
 import { orderFormSchema, orderFormType } from "@/schema/check-out-order";
 import { getArtForCheckout } from "@/data/checkout/get-art-for-checkout";
-import { reserveArt, releaseReservation } from "@/data/actions/reserve-art";
-import { initializePayment } from "@/data/actions/initialize-payment";
+import { reserveArt, releaseReservation } from "@/actions/reserve-art";
+import { initializePayment } from "@/actions/initialize-payment";
 
 type HandleCheckoutResult =
   | {
