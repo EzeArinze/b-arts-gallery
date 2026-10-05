@@ -8,5 +8,9 @@ export default async function OrderSummaryLoader({
 }) {
   const { art, items } = await artPromise;
 
-  return <OrderSummary items={items} currency={art.price.currency ?? "NGN"} />;
+  if (!art || !items) {
+    return <div className="text-sm text-muted-foreground">Art not found</div>;
+  }
+
+  return <OrderSummary items={items} currency={art.price?.currency ?? "NGN"} />;
 }

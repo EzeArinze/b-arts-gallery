@@ -1,6 +1,5 @@
 import "server-only";
 
-import { notFound } from "next/navigation";
 // import { getArtForCheckout } from "@/data/checkout/get-art-for-checkout";
 import type { SummaryItem } from "@/app/(art-page)/art/checkout/_components/order-summary";
 import { getART } from "../get-art";
@@ -9,7 +8,7 @@ export async function getCheckoutArt(slug: string) {
   const result = await getART(slug);
 
   if (!result) {
-    notFound();
+    return { ok: false, reason: "not-found" };
   }
 
   if (result.price?.amount == null) {
