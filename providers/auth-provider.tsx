@@ -6,6 +6,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
     <ClerkProvider
       signInFallbackRedirectUrl={"/"}
       signUpFallbackRedirectUrl={"/"}
+      telemetry={false}
     >
       {children}
     </ClerkProvider>

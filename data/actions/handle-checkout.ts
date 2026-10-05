@@ -1,16 +1,22 @@
 "use server";
 
-import { redirect } from "next/navigation";
+// import { redirect } from "next/navigation";
 import { orderFormSchema, orderFormType } from "@/schema/check-out-order";
 import { getArtForCheckout } from "@/data/checkout/get-art-for-checkout";
 import { reserveArt, releaseReservation } from "@/data/actions/reserve-art";
 import { initializePayment } from "@/data/actions/initialize-payment";
 
-type HandleCheckoutResult = {
-  status: "error";
-  message: string;
-  fieldErrors?: string;
-};
+type HandleCheckoutResult =
+  | {
+      status: "error";
+      message: string;
+      fieldErrors?: string;
+    }
+  | {
+      status: "success";
+      message: string;
+      authorizationUrl: string;
+    };
 
 export async function handleCheckout({
   values,
@@ -80,5 +86,9 @@ export async function handleCheckout({
     return { status: "error", message: payment.error };
   }
 
-  redirect(payment.authorizationUrl);
+  return {
+    status: "success",
+    message: "Payment initialization successful ",
+    authorizationUrl: payment.authorizationUrl,
+  };
 }
