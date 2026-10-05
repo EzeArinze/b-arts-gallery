@@ -1,6 +1,6 @@
-import { HOME_QUERYResult } from "@/sanity.types";
+import { HOME_QUERY_RESULT } from "@/sanity.types";
 
-export type CollectionType = HOME_QUERYResult["HomePageCollections"];
+export type CollectionType = HOME_QUERY_RESULT["HomePageCollections"];
 export type CollectionItem = CollectionType[number];
 
 export type OrderMetadata = {

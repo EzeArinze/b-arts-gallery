@@ -3,8 +3,6 @@ import { Anton } from "next/font/google";
 import { ThemeProvider } from "@/providers/theme-providers";
 import AuthProvider from "@/providers/auth-provider";
 import "./globals.css";
-// import { Footer } from "./_components/footer";
-// import { SanityLive } from "@/sanity/lib/live";
 import { Toaster } from "@/components/ui/sonner";
 import ScriptComponent from "@/providers/script-component";
 
@@ -35,10 +33,7 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             {children}
-
-            {/*<Footer />*/}
           </ThemeProvider>
-          {/*<SanityLive />*/}
           <Toaster closeButton richColors position="top-right" />
           <ScriptComponent />
         </body>

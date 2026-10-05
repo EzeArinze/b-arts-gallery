@@ -1,11 +1,11 @@
 import { HoverExpand_001 } from "@/components/ui/skiper-ui/skiper52";
-import { HOME_QUERYResult } from "@/sanity.types";
+import { HOME_QUERY_RESULT } from "@/sanity.types";
 import { urlFor } from "@/sanity/lib/image";
 
 export default function NewDrops({
   newPostImage,
 }: {
-  newPostImage: HOME_QUERYResult["newPostImages"];
+  newPostImage: HOME_QUERY_RESULT["newPostImages"];
 }) {
   if (!newPostImage?.length) return null;
 

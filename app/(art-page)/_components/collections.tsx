@@ -51,7 +51,7 @@ export default function CollectionSection({
               src={firstItem.image.url ? urlFor(firstItem.image.url).url() : ""}
               alt={firstItem.image.alt || "Featured collection"}
               fill
-              loading="eager"
+              // loading="eager"
               sizes="(min-width: 768px) 40vw, 100vw"
               className="object-cover brightness-95 contrast-110 transition-transform duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.025] group-hover:brightness-100"
             />
@@ -96,6 +96,7 @@ export default function CollectionSection({
                     alt={item.image.alt || "Collection artwork"}
                     fill
                     sizes="(min-width: 768px) 33vw, 50vw"
+                    // loading="eager"
                     className="object-cover brightness-95 contrast-110 transition-transform duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.025] group-hover:brightness-100"
                   />
                 </Link>

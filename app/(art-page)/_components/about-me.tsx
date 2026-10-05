@@ -1,6 +1,9 @@
 import Image from "next/image";
 import artist from "@/public/hero.webp";
 
+// Maybe add a link to the artist's socials or website in the future
+// Maybe get the artist's bio from Sanity in the future, but for now it's hardcoded
+
 export default function AboutArtist() {
   return (
     <section className=" w-full bg-background px-6 py-12 md:px-16 lg:min-h-screen lg:flex lg:flex-col lg:justify-center">
@@ -23,6 +26,7 @@ export default function AboutArtist() {
             src={artist}
             alt="The artist portrait"
             fill
+            sizes="(min-width: 1024px) 40vw, 100vw"
             className="object-cover brightness-95 contrast-110"
           />
         </div>
