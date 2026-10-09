@@ -59,6 +59,7 @@ export const ART_DETAILS =
   about,
   dimensions,
   available,
+  isSold,
   reservedUntil,
   artist,
   price{

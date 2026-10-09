@@ -302,7 +302,7 @@ export type COLLECTIONS_RESULT = {
 
 // Source: sanity/lib/queries.ts
 // Variable: ART_DETAILS
-// Query: *[_type == "collection" && slug.current == $slug][0]{  _id,  _rev,  name,  about,  dimensions,  available,  reservedUntil,  artist,  price{    amount,    currency  },  "image": {    "url": artImage.asset->url,    "alt": artImage.alt  },  creationDate,  }
+// Query: *[_type == "collection" && slug.current == $slug][0]{  _id,  _rev,  name,  about,  dimensions,  available,  isSold,  reservedUntil,  artist,  price{    amount,    currency  },  "image": {    "url": artImage.asset->url,    "alt": artImage.alt  },  creationDate,  }
 export type ART_DETAILS_RESULT = {
   _id: string;
   _rev: string;
@@ -314,6 +314,7 @@ export type ART_DETAILS_RESULT = {
     unit?: "cm" | "in";
   } | null;
   available: boolean | null;
+  isSold: boolean | null;
   reservedUntil: string | null;
   artist: string | null;
   price: {
@@ -364,13 +365,16 @@ export type ORDER_BY_REFERENCE_RESULT = {
 } | null;
 
 // Query TypeMap
-import "@sanity/client";
-declare module "@sanity/client" {
+declare global {
   interface SanityQueries {
     '\n{\n  "newPostImages": *[_type == "collection"]\n    | order(_createdAt desc)[0...4]{\n      _id,\n      "image": {\n        "url": artImage.asset->url,\n        "alt": artImage.alt\n      }\n    },\n\n  "HomePageCollections": *[_type == "collection"]| order(_createdAt desc)[0...4]{\n    name,\n    "slug": slug.current,\n    price{\n      amount,\n      currency\n    },\n    creationDate,\n    about,\n    "image": {\n      "url": artImage.asset->url,\n      "alt": artImage.alt\n    }\n  }\n}\n': HOME_QUERY_RESULT;
     '\n{\n  "collections": *[_type == "collection"]\n    | order(_createdAt desc)[$start...$end]{\n      _id,\n      name,\n      artist,\n      "slug": slug.current,\n      price{\n        amount,\n        currency\n      },\n      creationDate,\n      about,\n      "image": {\n        "url": artImage.asset->url,\n        "alt": artImage.alt\n      }\n    },\n  "total": count(*[_type == "collection"])\n}\n': COLLECTIONS_RESULT;
-    '*[_type == "collection" && slug.current == $slug][0]{\n  _id,\n  _rev,\n  name,\n  about,\n  dimensions,\n  available,\n  reservedUntil,\n  artist,\n  price{\n    amount,\n    currency\n  },\n  "image": {\n    "url": artImage.asset->url,\n    "alt": artImage.alt\n  },\n  creationDate,\n  }': ART_DETAILS_RESULT;
+    '*[_type == "collection" && slug.current == $slug][0]{\n  _id,\n  _rev,\n  name,\n  about,\n  dimensions,\n  available,\n  isSold,\n  reservedUntil,\n  artist,\n  price{\n    amount,\n    currency\n  },\n  "image": {\n    "url": artImage.asset->url,\n    "alt": artImage.alt\n  },\n  creationDate,\n  }': ART_DETAILS_RESULT;
     '*[_type == "order" && payment.reference == $reference][0]{\n    _id,\n    }\n': PROCESSED_ORDER_RESULT;
     '\n*[_type == "order" && payment.reference == $reference][0]{\n  customer{ name, email },\n  order{\n    "items": items[]->{\n      name,\n      artist,\n      "slug": slug.current,\n      "image": { "url": artImage.asset->url, "alt": artImage.alt }\n    },\n    total,\n    currency,\n    status,\n    createdAt\n  },\n  payment{ reference, status }\n}\n': ORDER_BY_REFERENCE_RESULT;
   }
+}
+// Lets @sanity/client releases that predate the global registry read it too
+declare module "@sanity/client" {
+  interface SanityQueries extends globalThis.SanityQueries {}
 }
