@@ -194,6 +194,7 @@ async function ArtDetailsPage({ params }: { params: Params }) {
   ].filter((s) => s.value);
 
   const imgSize = art.image?.url ? sizeOf(art.image.url) : null;
+  const available = art.available && !art.isSold;
 
   return (
     <main className="relative min-h-dvh overflow-hidden bg-zinc-950 px-4 pb-20 pt-24 text-zinc-100 md:px-16">
@@ -290,10 +291,10 @@ async function ArtDetailsPage({ params }: { params: Params }) {
                 <span
                   aria-hidden
                   className={`size-2 rounded-full ${
-                    art.available ? "bg-primary" : "border border-zinc-500"
+                    available ? "bg-primary" : "border border-zinc-500"
                   }`}
                 />
-                {art.available ? "Available" : "This work has found a home"}
+                {available ? "Available" : "This work has found a home"}
               </p>
             </div>
           </div>

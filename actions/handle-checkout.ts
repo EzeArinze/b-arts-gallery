@@ -5,6 +5,7 @@ import { orderFormSchema, orderFormType } from "@/schema/check-out-order";
 import { getArtForCheckout } from "@/data/checkout/get-art-for-checkout";
 import { reserveArt, releaseReservation } from "@/actions/reserve-art";
 import { initializePayment } from "@/actions/initialize-payment";
+import { env } from "@/lib/env/server";
 
 type HandleCheckoutResult =
   | {
@@ -77,6 +78,7 @@ export async function handleCheckout({
           currency: art.price.currency ?? "NGN",
         },
       ],
+      cancel_action: `${env.BASE_URL}/checkout/cancel?slug=${slug}`,
     },
   });
 

@@ -1,4 +1,3 @@
-import { SanityLive } from "@/sanity/lib/live";
 import { Footer } from "./_components/footer";
 import Navigation from "./_components/navigation";
 
@@ -12,7 +11,6 @@ export default function RootLayout({
       <Navigation />
       <section>{children}</section>
       <Footer />
-      <SanityLive />
     </div>
   );
 }

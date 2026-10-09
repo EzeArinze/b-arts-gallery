@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { Anton } from "next/font/google";
 import { ThemeProvider } from "@/providers/theme-providers";
-import AuthProvider from "@/providers/auth-provider";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
+import { SanityLive } from "@/sanity/lib/live";
+import AuthProvider from "@/providers/auth-provider";
 import ScriptComponent from "@/providers/script-component";
 
 const anton = Anton({
@@ -34,6 +35,7 @@ export default function RootLayout({
           >
             {children}
           </ThemeProvider>
+          <SanityLive />
           <Toaster closeButton richColors position="top-right" />
           <ScriptComponent />
         </body>

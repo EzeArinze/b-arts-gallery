@@ -3,6 +3,7 @@ import { formatCurrency } from "@/utils/format-currency";
 import { getOrderByReference } from "@/data/get-order-by-ref";
 import { StateLayout } from "../_components/state-layout";
 import { BackToGallery } from "../_components/back-to-gallery";
+import Link from "next/link";
 
 type SearchParams = Promise<{ reference?: string; trxref?: string }>;
 
@@ -38,12 +39,12 @@ export default async function CheckoutSuccessful({
         heading="Almost there."
         message="We're still confirming your payment with the gallery's bank. This usually takes a few seconds."
       >
-        <a
+        <Link
           href={`?reference=${reference}`}
           className={`inline-flex items-center gap-2 rounded-none border border-muted/40 px-6 py-3 text-[11px] uppercase tracking-[0.2em] text-foreground transition-colors duration-200 hover:border-primary ${focusRing}`}
         >
           Refresh
-        </a>
+        </Link>
       </StateLayout>
     );
   }

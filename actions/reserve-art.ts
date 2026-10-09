@@ -2,7 +2,7 @@
 
 import { backendClient } from "@/sanity/lib/backend-cLient";
 
-const RESERVATION_MINUTES = 20;
+const RESERVATION_MINUTES = 3;
 
 type ReserveResult =
   | { ok: true; reservedUntil: string }
