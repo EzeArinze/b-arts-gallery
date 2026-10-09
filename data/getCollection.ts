@@ -1,5 +1,6 @@
 import "server-only";
 
+import { stegaClean } from "@sanity/client/stega";
 import { sanityFetch } from "@/sanity/lib/live";
 import { COLLECTIONS } from "@/sanity/lib/queries";
 import { PAGE_SIZE } from "@/utils/constant";
@@ -23,10 +24,12 @@ export async function getCollection({
 
   const { collections, total } = data;
 
+  const cleanCollections = stegaClean(collections);
+
   const totalPages = Math.ceil(total / limit);
 
   return {
-    collections,
+    collections: cleanCollections,
     totalPages,
   };
 }
